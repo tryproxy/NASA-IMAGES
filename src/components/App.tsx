@@ -1,11 +1,62 @@
 import React from 'react';
 import { SearchField } from './SearchField';
+import { SearchResults } from './SearchResults';
+import { LOCAL_STORAGE_KEY } from '../constannts';
 
-class App extends React.Component {
+type Props = Record<string, never>;
+type State = { input: string; inputHistory: string[] };
+
+class App extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      input: '',
+      inputHistory: [],
+    };
+  }
+
+  componentDidMount(): void {
+    this.loadHistory();
+  }
+
+  loadHistory = () => {
+    const searchHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (searchHistory) {
+      try {
+        const parsedSearchHistory = JSON.parse(searchHistory) as string[];
+        console.log(parsedSearchHistory, 'SEARCH HISTORY');
+        this.setState({ inputHistory: parsedSearchHistory });
+      } catch (e) {
+        if (e instanceof Error) {
+          throw e.message;
+        }
+      }
+    }
+  };
+
+  saveHistory = (query: string) => {
+    this.setState(
+      (prev) => ({
+        inputHistory: [...prev.inputHistory, query.trim()],
+      }),
+      () =>
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(this.state.inputHistory)
+        )
+    );
+  };
+
+  handleSearch = (searchInput: string) => {
+    this.saveHistory(searchInput);
+    // this.setState({ input: '' });
+  };
+
   render() {
     return (
-      <div className="flex h-screen w-screen flex-col items-center bg-slate-700 p-4 text-amber-50">
-        <SearchField />
+      <div className="flex h-screen w-screen flex-col items-center gap-4 bg-black p-4 font-mono text-amber-50">
+        <SearchField onSearch={this.handleSearch} />
+        <SearchResults searchResults={this.state.inputHistory} />
       </div>
     );
   }
