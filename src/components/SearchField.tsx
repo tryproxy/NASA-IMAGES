@@ -2,7 +2,7 @@ import React from 'react';
 
 type Props = {
   onSearch: (input: string) => void;
-  searchResults: string[];
+  searchQueries: string[];
   onRemoveDropdownResult: (idx: number | string) => void;
 };
 type State = {
@@ -10,6 +10,8 @@ type State = {
   hovered: string;
   isDropdownOpened: boolean;
 };
+
+const searchPlaceholder = 'Search...';
 
 export class SearchField extends React.Component<Props, State> {
   private inputRef = React.createRef<HTMLInputElement>();
@@ -22,7 +24,8 @@ export class SearchField extends React.Component<Props, State> {
     super(props);
     this.state = {
       input: '',
-      hovered: 'Search...',
+      // hovered: 'Search...',
+      hovered: searchPlaceholder,
       isDropdownOpened: false,
     };
   }
@@ -72,13 +75,13 @@ export class SearchField extends React.Component<Props, State> {
     setTimeout(() => {
       const focusedEl = document.activeElement as Element | null;
       if (
-        this.dropdownRef.current &&
         focusedEl &&
+        this.dropdownRef.current &&
         this.dropdownRef.current.contains(focusedEl)
       ) {
         return;
       }
-      this.setState({ isDropdownOpened: false, hovered: 'Search...' });
+      this.setState({ isDropdownOpened: false, hovered: searchPlaceholder });
     }, 100);
   };
 
@@ -109,7 +112,11 @@ export class SearchField extends React.Component<Props, State> {
               ref={this.inputRef}
               className="w-full border-amber-50 bg-gray-900 px-2 py-1 focus:border-transparent focus:outline-none"
               type="text"
-              placeholder={this.state.hovered}
+              placeholder={
+                this.props.searchQueries.length > 0
+                  ? this.state.hovered
+                  : searchPlaceholder
+              }
               value={this.state.input}
               onChange={this.handleInputChange}
               onKeyDown={this.handleInputKeyDown}
@@ -126,7 +133,7 @@ export class SearchField extends React.Component<Props, State> {
 
           {this.state.isDropdownOpened && (
             <ul className="absolute w-full bg-gray-900" ref={this.dropdownRef}>
-              {this.props.searchResults.map((result, idx) => (
+              {this.props.searchQueries.map((result, idx) => (
                 <div
                   className="flex cursor-default items-center justify-between px-2 py-1 hover:bg-gray-800"
                   key={idx}
@@ -141,9 +148,9 @@ export class SearchField extends React.Component<Props, State> {
                     {result}
                   </li>
                   <button
+                    className="ml-2 cursor-pointer"
                     onBlur={this.handleDropdownBlur}
                     onClick={() => this.onRemoveResultDropdown(idx)}
-                    className="ml-2 cursor-pointer"
                   >
                     [X]
                   </button>

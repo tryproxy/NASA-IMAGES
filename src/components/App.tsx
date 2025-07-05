@@ -2,9 +2,21 @@ import React from 'react';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
 import { LOCAL_STORAGE_KEY } from '../constannts';
+import { nasaClient } from '../api/nasaClient';
 
 type Props = Record<string, never>;
-type State = { input: string; inputHistory: string[] };
+type NasaItem = {
+  nasa_id: string;
+  title: string;
+  description: string;
+  thumbnailUrl?: string;
+  mediaType?: string;
+};
+type State = {
+  input: string;
+  inputHistory: string[];
+  searchResults: NasaItem[];
+};
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -12,11 +24,17 @@ class App extends React.Component<Props, State> {
     this.state = {
       input: '',
       inputHistory: [],
+      searchResults: [],
     };
   }
 
   componentDidMount(): void {
+    document.addEventListener('visibilitychange', this.handleTabsSync);
     this.loadHistory();
+  }
+
+  componentWillUnmount(): void {
+    document.removeEventListener('visibilitychange', this.handleTabsSync);
   }
 
   loadHistory = () => {
@@ -51,10 +69,18 @@ class App extends React.Component<Props, State> {
     );
   };
 
-  handleSearch = (searchInput: string) => {
+  handleSearch = async (searchInput: string) => {
     this.saveHistory(searchInput);
-    // this.setState({ input: '' });
+    try {
+      const res = await nasaClient.search(searchInput);
+      this.setState({ searchResults: res });
+    } catch (e) {
+      if (e instanceof Error) throw new Error(e.message);
+    }
   };
+
+  handleTabsSync = () =>
+    document.visibilityState === 'visible' && this.loadHistory();
 
   handleRemoveDropdownResult = (index: number | string) => {
     this.setState(
@@ -71,13 +97,16 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="flex h-screen w-screen flex-col items-center gap-4 bg-black p-4 font-mono text-amber-50">
+      <div className="flex h-screen w-screen grow flex-col items-center gap-40 bg-black p-4 font-mono text-amber-50">
         <SearchField
           onRemoveDropdownResult={this.handleRemoveDropdownResult}
           onSearch={this.handleSearch}
-          searchResults={this.state.inputHistory}
+          searchQueries={this.state.inputHistory}
         />
-        <SearchResults searchResults={this.state.inputHistory} />
+        <SearchResults
+          searchQueries={this.state.inputHistory}
+          searchResults={this.state.searchResults}
+        />
       </div>
     );
   }
