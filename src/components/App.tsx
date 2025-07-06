@@ -16,6 +16,7 @@ type State = {
   input: string;
   inputHistory: string[];
   searchResults: NasaItem[];
+  isLoading: boolean;
 };
 
 class App extends React.Component<Props, State> {
@@ -25,6 +26,7 @@ class App extends React.Component<Props, State> {
       input: '',
       inputHistory: [],
       searchResults: [],
+      isLoading: false,
     };
   }
 
@@ -71,11 +73,14 @@ class App extends React.Component<Props, State> {
 
   handleSearch = async (searchInput: string) => {
     this.saveHistory(searchInput);
+    this.setState({ isLoading: true });
     try {
       const res = await nasaClient.search(searchInput);
       this.setState({ searchResults: res });
     } catch (e) {
       if (e instanceof Error) throw new Error(e.message);
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
@@ -97,16 +102,23 @@ class App extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="flex h-screen w-screen grow flex-col items-center gap-40 bg-black p-4 font-mono text-amber-50">
+      <div className="flex min-h-screen min-w-screen grow flex-col items-center gap-4 overflow-x-hidden bg-black font-mono text-amber-50">
         <SearchField
           onRemoveDropdownResult={this.handleRemoveDropdownResult}
           onSearch={this.handleSearch}
           searchQueries={this.state.inputHistory}
         />
-        <SearchResults
-          searchQueries={this.state.inputHistory}
-          searchResults={this.state.searchResults}
-        />
+        {this.state.isLoading ? (
+          <div className="flex gap-2">
+            <p className="flex">Fetching [images.nasa.gov]</p>
+            <span className="loader left-0 inline-flex h-3 w-3"></span>
+          </div>
+        ) : (
+          <SearchResults
+            searchQueries={this.state.inputHistory}
+            searchResults={this.state.searchResults}
+          />
+        )}
       </div>
     );
   }

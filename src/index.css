@@ -1,1 +1,28 @@
 @import 'tailwindcss';
+
+@keyframes loader {
+  0% {
+    content: '.';
+  }
+  20% {
+    content: '..';
+  }
+  40% {
+    content: '...';
+  }
+  60% {
+    content: ' ..';
+  }
+  80% {
+    content: '  .';
+  }
+  100% {
+    content: '.';
+  }
+}
+
+.loader::after {
+  content: '';
+  animation: loader 500ms infinite;
+  white-space: pre;
+}
