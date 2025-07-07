@@ -2,7 +2,7 @@ import React from 'react';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
 import { LOCAL_STORAGE_KEY } from '../constannts';
-import { nasaClient } from '../api/nasaClient';
+import { nasaClient, type SearchClient } from '../api/nasaClient';
 
 type Props = Record<string, never>;
 type NasaItem = {
@@ -19,6 +19,8 @@ type State = {
   isLoading: boolean;
 };
 
+const INITIAL_QUERY = 'moon landing site';
+
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -33,6 +35,12 @@ class App extends React.Component<Props, State> {
   componentDidMount(): void {
     document.addEventListener('visibilitychange', this.handleTabsSync);
     this.loadHistory();
+    this.searchWithClient({
+      query:
+        JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '')[0] ||
+        INITIAL_QUERY,
+      apiClient: nasaClient,
+    });
   }
 
   componentWillUnmount(): void {
@@ -71,17 +79,27 @@ class App extends React.Component<Props, State> {
     );
   };
 
-  handleSearch = async (searchInput: string) => {
-    this.saveHistory(searchInput);
-    this.setState({ isLoading: true });
+  searchWithClient = async ({
+    query,
+    apiClient,
+  }: {
+    query: string;
+    apiClient: SearchClient;
+  }) => {
     try {
-      const res = await nasaClient.search(searchInput);
+      const res = await apiClient.search(query);
       this.setState({ searchResults: res });
     } catch (e) {
       if (e instanceof Error) throw new Error(e.message);
     } finally {
       this.setState({ isLoading: false });
     }
+  };
+
+  handleSearch = async (searchQuery: string) => {
+    this.saveHistory(searchQuery);
+    this.setState({ isLoading: true });
+    this.searchWithClient({ query: searchQuery, apiClient: nasaClient });
   };
 
   handleTabsSync = () =>

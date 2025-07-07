@@ -17,7 +17,11 @@ export type NasaResponse = {
   };
 };
 
-class NasaClient {
+export interface SearchClient {
+  search: (query: string) => Promise<NasaItem[]>;
+}
+
+class NasaClient implements SearchClient {
   private readonly BASE_URL = 'https://images-api.nasa.gov';
   private readonly ENDPOINT = {
     SEARCH: '/search',

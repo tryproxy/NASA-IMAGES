@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card } from './Card';
 
 type NasaItem = {
   nasa_id: string;
@@ -12,35 +13,31 @@ type Props = {
   searchQueries: string[];
 };
 
-export class SearchResults extends React.Component<Props> {
+type State = {
+  isZoomedModelOpen: boolean;
+};
+
+export class SearchResults extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isZoomedModelOpen: false,
+    };
   }
   render() {
     return (
       <div className="min-w-2/3 rounded-sm border border-dashed border-gray-300 p-4">
         <div className="min-w-2/3 rounded-sm border border-dashed border-gray-300 p-4">
           <div className="grid grid-cols-5 gap-4">
-            {this.props.searchResults.map((item) => (
-              <div key={item.nasa_id} className="text-amber-50">
-                {item.thumbnailUrl && (
-                  <img
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
-                    }}
-                    src={item.thumbnailUrl}
-                    alt={item.title}
-                    title={item.description}
-                    className="aspect-square w-full rounded object-cover"
-                  />
-                )}
-                <p className="mt-1 truncate text-sm font-medium">
-                  {item.title}
-                </p>
-              </div>
-            ))}
+            {this.props.searchResults.length > 0 ? (
+              this.props.searchResults.map((item) => (
+                <div key={item.nasa_id} className="text-amber-51">
+                  {item.thumbnailUrl && <Card item={item} />}
+                </div>
+              ))
+            ) : (
+              <p className="text-amber-700">No results found</p>
+            )}
           </div>
         </div>
         {/* <pre className="break-words whitespace-pre-wrap text-amber-50">
