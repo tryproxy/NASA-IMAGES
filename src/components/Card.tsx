@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalImage } from './ModalImage';
-import type { NasaItem } from '../api/nasaClient';
+import { ModalImage } from './ModalAsset';
+import { type NasaItem } from '../api/nasaClient';
 
 type Props = {
   item: NasaItem;
@@ -39,8 +39,10 @@ export class Card extends React.Component<Props, State> {
         <p className="mt-2 truncate text-sm font-medium">{item.title}</p>
         {this.state.isZoomedModelOpen && (
           <ModalImage
+            imageId={item.nasa_id}
             imageSrc={item.thumbnailUrl || ''}
             imageTitle={item.description}
+            type={item.media_type || ''}
             onClose={this.handleModalClose}
           />
         )}

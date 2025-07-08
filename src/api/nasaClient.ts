@@ -3,18 +3,40 @@ export type NasaItem = {
   title: string;
   description: string;
   thumbnailUrl?: string;
-  mediaType?: string;
+  media_type?: string;
 };
 
 export type NasaRawData = {
   data: NasaItem[];
-  links: { href: string }[];
+  links: { href: string; rel: string }[];
 };
 
-export type NasaResponse = {
+export type NasaSearchResponse = {
   collection: {
     items: NasaRawData[];
+    // items: NasaItem[];
   };
+};
+
+export type NasaAssetResponse = {
+  collection: {
+    items: NasaAsset[];
+    href: string;
+    verstion: string;
+  };
+};
+
+export type NasaAsset = {
+  original?: string;
+  large?: string;
+  medium?: string;
+  small?: string;
+  thumb?: string;
+  metadata?: string;
+};
+
+export type Link = {
+  href: string;
 };
 
 export interface SearchClient {
@@ -25,29 +47,47 @@ class NasaClient implements SearchClient {
   private readonly BASE_URL = 'https://images-api.nasa.gov';
   private readonly ENDPOINT = {
     SEARCH: '/search',
+    ASSET_ID: '/asset/',
   } as const;
 
   async search(query: string): Promise<NasaItem[]> {
     try {
       const url = new URL(this.ENDPOINT.SEARCH, this.BASE_URL);
       url.searchParams.set('q', query.trim());
+      url.searchParams.set('page', '1');
+      url.searchParams.set('page_size', '10');
 
       const response = await fetch(url.toString());
-      const data = (await response.json()) as NasaResponse;
+      const data = (await response.json()) as NasaSearchResponse;
 
-      const results = data.collection.items
-        .map((item) => ({
-          nasa_id: item.data[0].nasa_id,
-          title: item.data[0].title,
-          description: item.data[0].description,
-          thumbnailUrl: item.links[0].href,
-        }))
-        .slice(0, 10);
+      const results = data.collection.items.map((item) => ({
+        nasa_id: item.data[0].nasa_id,
+        title: item.data[0].title,
+        description: item.data[0].description,
+        thumbnailUrl: item.links.filter((link) => link.rel === 'preview')[0]
+          .href,
+        media_type: item.data[0].media_type,
+      }));
       return results;
     } catch (error) {
       console.error('Error fetching NASA data', error);
       return [];
     }
+  }
+
+  async getAsset(id: string): Promise<NasaAsset> {
+    const url = new URL(`${this.ENDPOINT.ASSET_ID}${id}`, this.BASE_URL);
+    const response = await fetch(url.toString());
+    const data = await response.json();
+
+    const urls = data.collection.items.map(
+      (item: { href: string }) => item.href
+    );
+    return {
+      original: urls.find((url: string) => url.includes('large')),
+      medium: urls.find((url: string) => url.includes('medium')),
+      small: urls.find((url: string) => url.includes('small')),
+    };
   }
 }
 
