@@ -17,6 +17,7 @@ type State = {
   inputHistory: string[];
   searchResults: NasaItem[];
   isLoading: boolean;
+  shouldThrow: boolean;
 };
 
 const INITIAL_QUERY = 'moon landing site';
@@ -29,6 +30,7 @@ class App extends React.Component<Props, State> {
       inputHistory: [],
       searchResults: [],
       isLoading: false,
+      shouldThrow: false,
     };
   }
 
@@ -119,6 +121,10 @@ class App extends React.Component<Props, State> {
   };
 
   render() {
+    if (this.state.shouldThrow) {
+      throw new Error('Error thrown');
+    }
+
     return (
       <div className="flex min-h-screen min-w-screen grow flex-col items-center gap-4 overflow-x-hidden bg-black font-mono text-amber-50">
         <SearchField
@@ -137,6 +143,12 @@ class App extends React.Component<Props, State> {
             searchResults={this.state.searchResults}
           />
         )}
+        <button
+          className="fixed right-4 bottom-4 h-10 w-50 cursor-pointer rounded-sm bg-gray-200 px-1 py-1 text-center font-bold text-gray-900 hover:bg-gray-300"
+          onClick={() => this.setState({ shouldThrow: true })}
+        >
+          Throw Error
+        </button>
       </div>
     );
   }

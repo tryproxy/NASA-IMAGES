@@ -26,8 +26,8 @@ export class SearchResults extends React.Component<Props, State> {
   }
   render() {
     return (
-      <div className="min-w-2/3 rounded-sm border border-dashed border-gray-300 p-4">
-        <div className="min-w-2/3 rounded-sm border border-dashed border-gray-300 p-4">
+      <div className="min-w-2/3 rounded-sm border-dashed border-gray-300 p-4">
+        <div className="min-w-2/3 rounded-sm border-dashed border-gray-300 p-4">
           <div className="grid grid-cols-5 gap-4">
             {this.props.searchResults.length > 0 ? (
               this.props.searchResults.map((item) => (

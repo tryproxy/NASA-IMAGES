@@ -20,16 +20,17 @@ export class ModalImage extends React.Component<Props> {
         className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90"
         onClick={this.onClose}
       >
-        <div
-          className="flex max-h-[90vh] max-w-[90vw] cursor-default flex-col items-center"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="flex max-h-[90vh] max-w-[90vw] cursor-pointer flex-col items-center">
           <img
+            onClick={(e) => e.stopPropagation()}
             src={this.props.imageSrc}
             alt={this.props.imageTitle}
             className="max-h-[80vh] cursor-default rounded-sm object-cover"
           />
-          <p className="mt-2 overflow-auto text-sm text-amber-50">
+          <p
+            className="mt-2 cursor-default overflow-auto text-sm text-amber-50"
+            onClick={(e) => e.stopPropagation()}
+          >
             {this.props.imageTitle}
           </p>
         </div>
