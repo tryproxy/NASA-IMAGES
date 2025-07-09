@@ -12,6 +12,7 @@ type NasaItem = {
 type Props = {
   searchResults: NasaItem[];
   searchQueries: string[];
+  isSuccessful: boolean;
 };
 
 type State = {
@@ -37,7 +38,7 @@ export class SearchResults extends React.Component<Props, State> {
                 </div>
               ))}
           </div>
-          {this.props.searchResults.length === 0 && (
+          {this.props.isSuccessful && this.props.searchResults.length === 0 && (
             <div className="flex max-w-full flex-col items-center">
               <p className="max-w-full font-bold text-amber-50">
                 No results found

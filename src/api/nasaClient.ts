@@ -39,8 +39,13 @@ export type Link = {
   href: string;
 };
 
+type SearchClientArgs = {
+  query: string;
+  options: { page: number };
+};
+
 export interface SearchClient {
-  search: (query: string) => Promise<NasaItem[]>;
+  search: (args: SearchClientArgs) => Promise<NasaItem[]>;
 }
 
 class NasaClient implements SearchClient {
@@ -50,14 +55,21 @@ class NasaClient implements SearchClient {
     ASSET_ID: '/asset/',
   } as const;
 
-  async search(query: string): Promise<NasaItem[]> {
+  async search({
+    query,
+    options: { page = 1 },
+  }: {
+    query: string;
+    options: { page: number };
+  }): Promise<NasaItem[]> {
     try {
       const url = new URL(this.ENDPOINT.SEARCH, this.BASE_URL);
       url.searchParams.set('q', query.trim());
-      url.searchParams.set('page', '1');
+      url.searchParams.set('page', page.toString());
       url.searchParams.set('page_size', '10');
 
       const response = await fetch(url.toString());
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = (await response.json()) as NasaSearchResponse;
 
       const results = data.collection.items.map((item) => ({
@@ -78,6 +90,7 @@ class NasaClient implements SearchClient {
   async getAsset(id: string): Promise<NasaAsset> {
     const url = new URL(`${this.ENDPOINT.ASSET_ID}${id}`, this.BASE_URL);
     const response = await fetch(url.toString());
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
 
     const urls = data.collection.items.map(

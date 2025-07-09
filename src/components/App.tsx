@@ -47,6 +47,7 @@ class App extends React.Component<Props, State> {
           JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
           INITIAL_QUERY,
         apiClient: nasaClient,
+        options: { page: 1 },
       })
     );
   }
@@ -88,13 +89,15 @@ class App extends React.Component<Props, State> {
 
   searchWithClient = async ({
     query,
+    options,
     apiClient,
   }: {
     query: string;
+    options: { page: number };
     apiClient: SearchClient;
   }) => {
     try {
-      const res = await apiClient.search(query);
+      const res = await apiClient.search({ query, options });
       this.setState({ searchResults: res, errorMessage: null });
     } catch (e) {
       if (e instanceof Error) {
@@ -108,7 +111,11 @@ class App extends React.Component<Props, State> {
   handleSearch = async (searchQuery: string) => {
     this.saveHistory(searchQuery);
     this.setState({ isLoading: true });
-    this.searchWithClient({ query: searchQuery, apiClient: nasaClient });
+    this.searchWithClient({
+      query: searchQuery,
+      apiClient: nasaClient,
+      options: { page: 1 },
+    });
   };
 
   handleTabsSync = () =>
@@ -144,6 +151,7 @@ class App extends React.Component<Props, State> {
           <div className="text-red-500">{this.state.errorMessage}</div>
         ) : (
           <SearchResults
+            isSuccessful={!this.state.isLoading && !this.state.errorMessage}
             searchQueries={this.state.inputHistory}
             searchResults={this.state.searchResults}
           />
