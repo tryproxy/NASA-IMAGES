@@ -62,7 +62,14 @@ export class ModalImage extends React.Component<Props, State> {
               className="h-[80vh] cursor-default rounded-sm object-cover"
             />
           ) : (
-            <video src={this.state.assetUrl} controls></video>
+            <video
+              className="h-[80vh] cursor-default rounded-sm object-cover"
+              src={this.state.assetUrl}
+              controls
+              autoPlay
+              muted
+              onClick={(e) => e.stopPropagation()}
+            ></video>
           )}
           <p
             className="mt-2 cursor-default overflow-auto text-sm text-amber-50"

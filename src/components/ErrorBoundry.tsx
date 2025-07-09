@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ErrorInfo } from 'react-dom/client';
+import { ErrorButton } from './ErrorButton';
 
 type Props = {
   children: React.ReactNode;
@@ -35,12 +36,10 @@ export class ErrorBoundry extends React.Component<Props, State> {
           <div className="flex h-screen flex-col items-center justify-center gap-4 bg-gray-900 font-mono text-2xl font-bold text-red-400">
             <p className="flex">Something went wrong</p>
             <p className="flex">Error details: {this.state.error}</p>
-            <button
-              className="fixed right-4 bottom-4 h-10 w-50 cursor-pointer rounded-sm bg-gray-200 px-1 py-1 text-gray-900 hover:bg-gray-300"
+            <ErrorButton
+              text="Reset"
               onClick={() => this.setState({ hasError: false })}
-            >
-              Reset
-            </button>
+            />
           </div>
         ) : (
           children

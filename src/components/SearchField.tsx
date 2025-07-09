@@ -1,4 +1,5 @@
 import React from 'react';
+import { searchTips } from '../constannts';
 
 type Props = {
   onSearch: (input: string) => void;
@@ -11,17 +12,8 @@ type State = {
   isDropdownOpened: boolean;
 };
 
-const placeholders = [
-  'e.g. nebula, jupiter, apollo 11, mars rover...',
-  'Try: milky way, saturn rings, ISS, Artemis...',
-  'Explore: black hole, curiosity, galaxies...',
-  'Search images like: aurora, moon landing, helix nebula...',
-  'Ex: comet, galaxy cluster, lunar eclipse...',
-  "Discover: exoplanets, pulsars, pluto's heart...",
-];
-
 const searchPlaceholder =
-  placeholders[Math.floor(Math.random() * placeholders.length)];
+  searchTips[Math.floor(Math.random() * searchTips.length)];
 
 export class SearchField extends React.Component<Props, State> {
   private inputRef = React.createRef<HTMLInputElement>();
@@ -34,7 +26,6 @@ export class SearchField extends React.Component<Props, State> {
     super(props);
     this.state = {
       input: '',
-      // hovered: 'Search...',
       hovered: searchPlaceholder,
       isDropdownOpened: false,
     };

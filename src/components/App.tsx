@@ -3,6 +3,8 @@ import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
 import { LOCAL_STORAGE_KEY } from '../constannts';
 import { nasaClient, type SearchClient } from '../api/nasaClient';
+import { Loader } from './Loader';
+import { ErrorButton } from './ErrorButton';
 
 type Props = Record<string, never>;
 type NasaItem = {
@@ -18,9 +20,10 @@ type State = {
   searchResults: NasaItem[];
   isLoading: boolean;
   shouldThrow: boolean;
+  errorMessage: null | string;
 };
 
-const INITIAL_QUERY = 'moon landing site';
+const INITIAL_QUERY = 'saturn rings';
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -31,18 +34,21 @@ class App extends React.Component<Props, State> {
       searchResults: [],
       isLoading: false,
       shouldThrow: false,
+      errorMessage: null,
     };
   }
 
   componentDidMount(): void {
     document.addEventListener('visibilitychange', this.handleTabsSync);
     this.loadHistory();
-    this.searchWithClient({
-      query:
-        JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '')[0] ||
-        INITIAL_QUERY,
-      apiClient: nasaClient,
-    });
+    this.setState({ isLoading: true }, () =>
+      this.searchWithClient({
+        query:
+          JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
+          INITIAL_QUERY,
+        apiClient: nasaClient,
+      })
+    );
   }
 
   componentWillUnmount(): void {
@@ -89,9 +95,11 @@ class App extends React.Component<Props, State> {
   }) => {
     try {
       const res = await apiClient.search(query);
-      this.setState({ searchResults: res });
+      this.setState({ searchResults: res, errorMessage: null });
     } catch (e) {
-      if (e instanceof Error) throw new Error(e.message);
+      if (e instanceof Error) {
+        this.setState({ errorMessage: e.message });
+      }
     } finally {
       this.setState({ isLoading: false });
     }
@@ -131,23 +139,19 @@ class App extends React.Component<Props, State> {
           onSearch={this.handleSearch}
           searchQueries={this.state.inputHistory}
         />
-        {this.state.isLoading ? (
-          <div className="flex gap-2">
-            <p className="flex">Fetching [images.nasa.gov]</p>
-            <span className="loader left-0 inline-flex h-3 w-3"></span>
-          </div>
+        {this.state.isLoading && <Loader />}
+        {this.state.errorMessage ? (
+          <div className="text-red-500">{this.state.errorMessage}</div>
         ) : (
           <SearchResults
             searchQueries={this.state.inputHistory}
             searchResults={this.state.searchResults}
           />
         )}
-        <button
-          className="fixed right-4 bottom-4 h-10 w-50 cursor-pointer rounded-sm bg-gray-200/40 px-1 py-1 text-center font-bold text-gray-900 hover:bg-gray-300"
+        <ErrorButton
+          text="Throw Error"
           onClick={() => this.setState({ shouldThrow: true })}
-        >
-          Throw Error
-        </button>
+        />
       </div>
     );
   }
