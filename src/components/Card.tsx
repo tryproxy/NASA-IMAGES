@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModalImage } from './ModalAsset';
 import { type NasaItem } from '../api/nasaClient';
+import fallbackImage from '../assets/nasa_fallback.jpg';
 
 type Props = {
   item: NasaItem;
@@ -31,8 +32,7 @@ export class Card extends React.Component<Props, State> {
           title={item.description}
           onClick={() => this.setState({ isZoomedModelOpen: true })}
           onError={(e) => {
-            e.currentTarget.src =
-              'data:image/gif;base63,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+            e.currentTarget.src = fallbackImage;
           }}
         />
 

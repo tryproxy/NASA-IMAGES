@@ -1,7 +1,7 @@
 import React from 'react';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
-import { LOCAL_STORAGE_KEY } from '../constannts';
+import { LOCAL_STORAGE_KEY } from '../constants';
 import { nasaClient, type SearchClient } from '../api/nasaClient';
 import { Loader } from './Loader';
 import { ErrorButton } from './ErrorButton';
@@ -151,7 +151,9 @@ class App extends React.Component<Props, State> {
           <div className="text-red-500">{this.state.errorMessage}</div>
         ) : (
           <SearchResults
-            isSuccessful={!this.state.isLoading && !this.state.errorMessage}
+            isSuccessful={
+              !this.state.isLoading && this.state.errorMessage == null
+            }
             searchQueries={this.state.inputHistory}
             searchResults={this.state.searchResults}
           />

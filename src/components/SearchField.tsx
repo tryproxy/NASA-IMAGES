@@ -1,5 +1,5 @@
 import React from 'react';
-import { searchTips } from '../constannts';
+import { searchTips } from '../constants';
 
 type Props = {
   onSearch: (input: string) => void;
@@ -36,7 +36,6 @@ export class SearchField extends React.Component<Props, State> {
       this.inputRef.current.focus();
     }
     window.addEventListener('focus', this.handleInputAutoFocus);
-    // this.loadHistory();
   }
 
   componentWillUnmount(): void {
@@ -47,17 +46,17 @@ export class SearchField extends React.Component<Props, State> {
     this.setState({ input: e.target.value });
 
   handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      console.log('dispatch SEARCH_QUERY');
+    if (e.key === 'Enter' && this.state.input.length > 0) {
       this.onSearch(this.state.input);
       this.setState({ isDropdownOpened: false });
     }
   };
 
   handleSearchInputClick = () => {
-    console.log('dispatch SEARCH_ITEM');
-    this.onSearch(this.state.input);
-    this.setState({ isDropdownOpened: false });
+    if (this.state.input.length > 0) {
+      this.onSearch(this.state.input);
+      this.setState({ isDropdownOpened: false });
+    }
   };
 
   handleInputAutoFocus = () => {
@@ -87,7 +86,6 @@ export class SearchField extends React.Component<Props, State> {
   };
 
   handleSearchAutocompleteClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    console.log('dispatch SEARCH_ITEM');
     this.setState(
       {
         input: e.currentTarget.innerText,

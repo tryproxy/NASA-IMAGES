@@ -14,7 +14,6 @@ export type NasaRawData = {
 export type NasaSearchResponse = {
   collection: {
     items: NasaRawData[];
-    // items: NasaItem[];
   };
 };
 
@@ -83,7 +82,7 @@ class NasaClient implements SearchClient {
       return results;
     } catch (error) {
       console.error('Error fetching NASA data', error);
-      return [];
+      throw error;
     }
   }
 

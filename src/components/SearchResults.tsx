@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './Card';
-import { searchTips } from '../constannts';
+import { searchTips } from '../constants';
 
 type NasaItem = {
   nasa_id: string;
@@ -12,7 +12,7 @@ type NasaItem = {
 type Props = {
   searchResults: NasaItem[];
   searchQueries: string[];
-  isSuccessful: boolean;
+  isSuccessful?: boolean;
 };
 
 type State = {
