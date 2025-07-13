@@ -1,10 +1,13 @@
 import React from 'react';
 import { nasaClient } from '../api/nasaClient';
 import fallbackImg from '../assets/nasa_fallback.jpg';
+import { ModalAssetImage } from './ModalAssetImage';
+import { ModalAssetVideo } from './ModalAssetVideo';
 
 type Props = {
   imageSrc: string;
   imageTitle: string;
+  imageDescription: string;
   imageId: string;
   type: string;
   onClose: () => void;
@@ -50,33 +53,22 @@ export class ModalImage extends React.Component<Props, State> {
     const { type } = this.props;
     return (
       <div
-        className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90"
+        className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md"
         onClick={this.onClose}
       >
-        <div className="flex max-h-[90vh] max-w-[90vw] cursor-pointer flex-col items-center">
+        <div className="flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
           {type === 'image' ? (
-            <img
-              onClick={(e) => e.stopPropagation()}
-              src={this.state.assetUrl}
-              alt={this.props.imageTitle}
-              className="h-[80vh] cursor-default rounded-sm object-cover"
+            <ModalAssetImage
+              imageSrc={this.state.assetUrl}
+              imageAlt={this.props.imageTitle}
+              imageTitle={this.props.imageTitle}
             />
           ) : (
-            <video
-              className="h-[80vh] cursor-default rounded-sm object-cover"
-              src={this.state.assetUrl}
-              controls
-              autoPlay
-              muted
-              onClick={(e) => e.stopPropagation()}
-            ></video>
+            <ModalAssetVideo
+              videoSrc={this.state.assetUrl}
+              videoTitle={this.props.imageTitle}
+            />
           )}
-          <p
-            className="mt-2 cursor-default overflow-auto text-sm text-amber-50"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {this.props.imageTitle}
-          </p>
         </div>
         <button
           className="absolute top-4 right-4 cursor-pointer"

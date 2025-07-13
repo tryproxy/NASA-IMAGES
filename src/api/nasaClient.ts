@@ -65,7 +65,7 @@ class NasaClient implements SearchClient {
       const url = new URL(this.ENDPOINT.SEARCH, this.BASE_URL);
       url.searchParams.set('q', query.trim());
       url.searchParams.set('page', page.toString());
-      url.searchParams.set('page_size', '10');
+      url.searchParams.set('page_size', '20');
 
       const response = await fetch(url.toString());
       if (!response.ok) throw new Error(`HTTP ${response.status}`);

@@ -66,7 +66,7 @@ export class SearchField extends React.Component<Props, State> {
   };
 
   handleDropdownClick = () => {
-    if (!this.state.isDropdownOpened) {
+    if (!this.state.isDropdownOpened && this.props.searchQueries.length > 0) {
       this.setState({ isDropdownOpened: true });
     }
   };
@@ -104,12 +104,12 @@ export class SearchField extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className="min-w-2/3">
-        <div className="relative">
-          <div className="flex">
+      <div className="mt-2 w-full max-w-screen-xl rounded-sm border border-transparent bg-gray-950 p-2">
+        <div className="relative w-full">
+          <div className="flex gap-2">
             <input
               ref={this.inputRef}
-              className="w-full border-amber-50 bg-gray-900 px-2 py-1 focus:border-transparent focus:outline-none"
+              className="w-full rounded-sm border border-amber-50/20 bg-gray-950 px-4 py-2 text-sm text-amber-50 focus:outline-none"
               type="text"
               placeholder={
                 this.props.searchQueries.length > 0
@@ -123,7 +123,7 @@ export class SearchField extends React.Component<Props, State> {
               onBlur={this.handleDropdownBlur}
             />
             <button
-              className="cursor-pointer bg-gray-950 px-2 py-1 hover:bg-gray-800"
+              className="cursor-pointer rounded-sm bg-amber-50 px-4 py-2 text-sm font-bold text-black transition hover:bg-white"
               onClick={this.handleSearchInputClick}
             >
               Search
@@ -131,23 +131,26 @@ export class SearchField extends React.Component<Props, State> {
           </div>
 
           {this.state.isDropdownOpened && (
-            <ul className="absolute w-full bg-gray-900" ref={this.dropdownRef}>
+            <ul
+              className="absolute mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
+              ref={this.dropdownRef}
+            >
               {this.props.searchQueries.map((result, idx) => (
                 <div
-                  className="flex cursor-default items-center justify-between px-2 py-1 hover:bg-gray-800"
+                  className="flex cursor-default items-center justify-between px-2 py-1 hover:bg-white/10"
                   key={idx}
                 >
                   <li
                     key={idx}
                     tabIndex={-1}
-                    className="w-full"
+                    className="flex w-full px-2 py-2 text-sm"
                     onMouseOver={this.handleMouseOver}
                     onClick={this.handleSearchAutocompleteClick}
                   >
-                    {result}
+                    <span className="w-full cursor-pointer">{result}</span>
                   </li>
                   <button
-                    className="ml-2 cursor-pointer"
+                    className="ml-2 cursor-pointer text-lg text-red-200/30 hover:text-red-200"
                     onBlur={this.handleDropdownBlur}
                     onClick={() => this.onRemoveResultDropdown(idx)}
                   >

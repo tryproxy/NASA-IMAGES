@@ -140,7 +140,7 @@ class App extends React.Component<Props, State> {
     }
 
     return (
-      <div className="flex min-h-screen min-w-screen grow flex-col items-center gap-4 overflow-x-hidden bg-black font-mono text-amber-50">
+      <div className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50">
         <SearchField
           onRemoveDropdownResult={this.handleRemoveDropdownResult}
           onSearch={this.handleSearch}

@@ -41,7 +41,8 @@ export class Card extends React.Component<Props, State> {
           <ModalImage
             imageId={item.nasa_id}
             imageSrc={item.thumbnailUrl || ''}
-            imageTitle={item.description}
+            imageTitle={item.title}
+            imageDescription={item.description}
             type={item.media_type || ''}
             onClose={this.handleModalClose}
           />
