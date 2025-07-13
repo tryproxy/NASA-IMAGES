@@ -132,7 +132,7 @@ export class SearchField extends React.Component<Props, State> {
 
           {this.state.isDropdownOpened && (
             <ul
-              className="absolute mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
+              className="animate-ease-in absolute mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
               ref={this.dropdownRef}
             >
               {this.props.searchQueries.map((result, idx) => (

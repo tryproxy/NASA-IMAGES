@@ -8,16 +8,25 @@ type Props = {
 export class ModalAssetImage extends React.Component<Props> {
   render() {
     return (
-      <div
-        className="flex max-w-[80vw] cursor-default flex-col items-center justify-center gap-4"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img
-          className="max-h-[80vh] max-w-full rounded-sm object-contain object-right"
-          src={this.props.imageSrc}
-          alt={this.props.imageTitle}
-        />
-        <p className="mt-2 flex items-center text-sm text-amber-50">
+      <div className="flex max-w-[80vw] cursor-default flex-col items-center justify-center">
+        <div className="relative flex h-[80vh] w-[80vw] max-w-full items-center justify-center">
+          <img
+            className="animate-fade-in pointer-events-none absolute z-0 h-[80vh] w-full scale-[1.1] opacity-0 blur-[100px]"
+            src={this.props.imageSrc}
+            alt=""
+            aria-hidden
+          />
+          <img
+            className="z-10 h-[80vh] w-full object-contain"
+            src={this.props.imageSrc}
+            alt={this.props.imageTitle}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+        <p
+          className="z-10 flex items-center p-4 text-sm text-amber-50"
+          onClick={(e) => e.stopPropagation()}
+        >
           {this.props.imageTitle}
         </p>
       </div>

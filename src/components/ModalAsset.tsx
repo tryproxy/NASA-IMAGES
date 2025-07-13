@@ -56,7 +56,7 @@ export class ModalImage extends React.Component<Props, State> {
         className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md"
         onClick={this.onClose}
       >
-        <div className="flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
+        <div className="popup-fade-in flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
           {type === 'image' ? (
             <ModalAssetImage
               imageSrc={this.state.assetUrl}

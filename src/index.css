@@ -26,3 +26,44 @@
   animation: loader 500ms infinite;
   white-space: pre;
 }
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 3000ms ease-out forwards;
+}
+
+@keyframes animate-ease-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-ease-in {
+  animation: animate-ease-in 100ms ease-out forwards;
+}
+
+@keyframes popup-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.popup-fade-in {
+  animation: popup-fade-in 100ms ease-out forwards;
+}
