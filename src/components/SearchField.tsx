@@ -38,6 +38,16 @@ export class SearchField extends React.Component<Props, State> {
     window.addEventListener('focus', this.handleInputAutoFocus);
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    if (
+      this.props.searchQueries.length > 0 &&
+      prevProps.searchQueries?.[0] !== this.props.searchQueries[0] &&
+      this.state.input === ''
+    ) {
+      this.setState({ input: this.props.searchQueries[0] });
+    }
+  }
+
   componentWillUnmount(): void {
     window.removeEventListener('focus', this.handleInputAutoFocus);
   }
