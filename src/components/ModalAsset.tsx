@@ -53,6 +53,7 @@ export class ModalImage extends React.Component<Props, State> {
     const { type } = this.props;
     return (
       <div
+        data-testid="modal-asset"
         className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md"
         onClick={this.onClose}
       >

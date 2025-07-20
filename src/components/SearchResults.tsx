@@ -11,7 +11,6 @@ type NasaItem = {
 };
 type Props = {
   searchResults: NasaItem[];
-  searchQueries: string[];
   isSuccessful?: boolean;
 };
 
