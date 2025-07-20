@@ -1,7 +1,7 @@
 import React from 'react';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
-import { LOCAL_STORAGE_KEY } from '../constants';
+import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { nasaClient, type SearchClient } from '../api/nasaClient';
 import { Loader } from './Loader';
 import { ErrorButton } from './ErrorButton';
@@ -22,8 +22,6 @@ type State = {
   shouldThrow: boolean;
   errorMessage: null | string;
 };
-
-const INITIAL_QUERY = 'saturn rings';
 
 class App extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -140,7 +138,10 @@ class App extends React.Component<Props, State> {
     }
 
     return (
-      <div className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50">
+      <div
+        data-testid="app-container"
+        className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
+      >
         <SearchField
           onRemoveDropdownResult={this.handleRemoveDropdownResult}
           onSearch={this.handleSearch}
@@ -148,13 +149,14 @@ class App extends React.Component<Props, State> {
         />
         {this.state.isLoading && <Loader />}
         {this.state.errorMessage ? (
-          <div className="text-red-500">{this.state.errorMessage}</div>
+          <div data-testid="error-message" className="text-red-500">
+            {this.state.errorMessage}
+          </div>
         ) : (
           <SearchResults
             isSuccessful={
               !this.state.isLoading && this.state.errorMessage == null
             }
-            searchQueries={this.state.inputHistory}
             searchResults={this.state.searchResults}
           />
         )}

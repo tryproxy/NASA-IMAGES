@@ -118,6 +118,7 @@ export class SearchField extends React.Component<Props, State> {
         <div className="relative w-full">
           <div className="flex gap-2">
             <input
+              data-testid="search-input"
               ref={this.inputRef}
               className="w-full rounded-sm border border-amber-50/20 bg-gray-950 px-4 py-2 text-sm text-amber-50 focus:outline-none"
               type="text"
