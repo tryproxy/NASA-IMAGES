@@ -1,12 +1,10 @@
-import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { nasaClient, type SearchClient } from '../api/nasaClient';
 import { Loader } from './Loader';
-import { ErrorButton } from './ErrorButton';
 
-type Props = Record<string, never>;
 type NasaItem = {
   nasa_id: string;
   title: string;
@@ -14,78 +12,52 @@ type NasaItem = {
   thumbnailUrl?: string;
   mediaType?: string;
 };
-type State = {
-  input: string;
-  inputHistory: string[];
-  searchResults: NasaItem[];
-  isLoading: boolean;
-  shouldThrow: boolean;
-  errorMessage: null | string;
-};
 
-class App extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      input: '',
-      inputHistory: [],
-      searchResults: [],
-      isLoading: false,
-      shouldThrow: false,
-      errorMessage: null,
-    };
-  }
+function App() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
+  const [inputHistory, setInputHistory] = useState<string[]>([]);
 
-  componentDidMount(): void {
-    document.addEventListener('visibilitychange', this.handleTabsSync);
-    this.loadHistory();
-    this.setState({ isLoading: true }, () =>
-      this.searchWithClient({
-        query:
-          JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
-          INITIAL_QUERY,
-        apiClient: nasaClient,
-        options: { page: 1 },
-      })
-    );
-  }
+  const handleTabsSync = useCallback(
+    () => document.visibilityState === 'visible' && loadHistory(),
+    []
+  );
 
-  componentWillUnmount(): void {
-    document.removeEventListener('visibilitychange', this.handleTabsSync);
-  }
-
-  loadHistory = () => {
+  const loadHistory = () => {
     const searchHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (searchHistory) {
       try {
         const parsedSearchHistory = JSON.parse(searchHistory) as string[];
-        this.setState({ inputHistory: parsedSearchHistory });
+        setInputHistory(parsedSearchHistory);
       } catch (e) {
         if (e instanceof Error) {
-          throw e.message;
+          console.error(e.message);
+          throw e;
         }
       }
     }
   };
 
-  saveHistory = (query: string) => {
+  const saveHistory = (query: string) => {
     if (query.trim().length === 0) return;
-    this.setState(
-      (prev) => ({
-        inputHistory: [
-          query.trim(),
-          ...prev.inputHistory.filter((entry) => entry !== query.trim()),
-        ],
-      }),
-      () =>
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          JSON.stringify(this.state.inputHistory)
-        )
-    );
+
+    setInputHistory((prev) => {
+      const updatedInputHistory = [
+        query.trim(),
+        ...prev.filter((entry) => entry !== query.trim()),
+      ];
+
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify(updatedInputHistory)
+      );
+
+      return updatedInputHistory;
+    });
   };
 
-  searchWithClient = async ({
+  const searchWithClient = async ({
     query,
     options,
     apiClient,
@@ -96,77 +68,77 @@ class App extends React.Component<Props, State> {
   }) => {
     try {
       const res = await apiClient.search({ query, options });
-      this.setState({ searchResults: res, errorMessage: null });
+      setSearchResults(res);
+      setError(null);
     } catch (e) {
       if (e instanceof Error) {
-        this.setState({ errorMessage: e.message });
+        setError(e.message);
       }
     } finally {
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
   };
 
-  handleSearch = async (searchQuery: string) => {
-    this.saveHistory(searchQuery);
-    this.setState({ isLoading: true });
-    this.searchWithClient({
+  const handleSearch = async (searchQuery: string) => {
+    saveHistory(searchQuery);
+    setIsLoading(true);
+    searchWithClient({
       query: searchQuery,
       apiClient: nasaClient,
       options: { page: 1 },
     });
   };
 
-  handleTabsSync = () =>
-    document.visibilityState === 'visible' && this.loadHistory();
-
-  handleRemoveDropdownResult = (index: number | string) => {
-    this.setState(
-      {
-        inputHistory: this.state.inputHistory.filter((_, idx) => idx !== index),
-      },
-      () =>
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          JSON.stringify(this.state.inputHistory)
-        )
-    );
+  const handleRemoveDropdownResult = (index: number | string) => {
+    setInputHistory((prev) => {
+      const updatedDropdownResult = prev.filter((_, idx) => idx !== index);
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify(updatedDropdownResult)
+      );
+      return updatedDropdownResult;
+    });
   };
 
-  render() {
-    if (this.state.shouldThrow) {
-      throw new Error('Error thrown');
-    }
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleTabsSync);
+    loadHistory();
+    setIsLoading(true);
+    searchWithClient({
+      query:
+        JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
+        INITIAL_QUERY,
+      apiClient: nasaClient,
+      options: { page: 1 },
+    });
 
-    return (
-      <div
-        data-testid="app-container"
-        className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
-      >
-        <SearchField
-          onRemoveDropdownResult={this.handleRemoveDropdownResult}
-          onSearch={this.handleSearch}
-          searchQueries={this.state.inputHistory}
+    return () =>
+      document.removeEventListener('visibilitychange', handleTabsSync);
+  }, [handleTabsSync]);
+
+  return (
+    <div
+      data-testid="app-container"
+      className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
+    >
+      <SearchField
+        onRemoveDropdownResult={handleRemoveDropdownResult}
+        onSearch={handleSearch}
+        searchQueries={inputHistory}
+      />
+      {isLoading && <Loader />}
+      {error ? (
+        <div data-testid="error-message" className="text-red-500">
+          {error}
+        </div>
+      ) : (
+        <SearchResults
+          isSuccessful={!isLoading && error == null}
+          searchResults={searchResults}
         />
-        {this.state.isLoading && <Loader />}
-        {this.state.errorMessage ? (
-          <div data-testid="error-message" className="text-red-500">
-            {this.state.errorMessage}
-          </div>
-        ) : (
-          <SearchResults
-            isSuccessful={
-              !this.state.isLoading && this.state.errorMessage == null
-            }
-            searchResults={this.state.searchResults}
-          />
-        )}
-        <ErrorButton
-          text="Throw Error"
-          onClick={() => this.setState({ shouldThrow: true })}
-        />
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }
 
 export default App;
