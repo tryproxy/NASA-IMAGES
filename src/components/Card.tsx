@@ -1,53 +1,41 @@
-import React from 'react';
-import { ModalImage } from './ModalAsset';
+import { useState } from 'react';
+import { ModalAsset } from './ModalAsset';
 import { type NasaItem } from '../api/nasaClient';
 import fallbackImage from '../assets/nasa_fallback.jpg';
+import { useNavigate, useParams } from 'react-router-dom';
 
-type Props = {
-  item: NasaItem;
-};
+export function Card({ item }: { item: NasaItem }) {
+  const [isZoomedModelOpen, setIsZoomedModelOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { page = '1' } = useParams();
 
-type State = {
-  isZoomedModelOpen: boolean;
-};
+  const handleClick = () => navigate(`/${page}/${item.nasa_id}`);
+  const handleModalClose = () => setIsZoomedModelOpen(false);
 
-export class Card extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isZoomedModelOpen: false,
-    };
-  }
+  return (
+    <div>
+      <img
+        className="aspect-square w-full cursor-pointer rounded object-cover"
+        src={item.thumbnailUrl}
+        alt={item.title}
+        title={item.description}
+        onClick={handleClick}
+        onError={(e) => {
+          e.currentTarget.src = fallbackImage;
+        }}
+      />
 
-  handleModalClose = () => this.setState({ isZoomedModelOpen: false });
-
-  render() {
-    const { item } = this.props;
-    return (
-      <div>
-        <img
-          className="aspect-square w-full cursor-pointer rounded object-cover"
-          src={item.thumbnailUrl}
-          alt={item.title}
-          title={item.description}
-          onClick={() => this.setState({ isZoomedModelOpen: true })}
-          onError={(e) => {
-            e.currentTarget.src = fallbackImage;
-          }}
+      <p className="mt-2 truncate text-sm font-medium">{item.title}</p>
+      {isZoomedModelOpen && (
+        <ModalAsset
+          assetDescription=""
+          assetId={item.nasa_id}
+          assetSrc={item.thumbnailUrl || ''}
+          assetTitle={item.title}
+          assetType={item.media_type || ''}
+          onClose={handleModalClose}
         />
-
-        <p className="mt-2 truncate text-sm font-medium">{item.title}</p>
-        {this.state.isZoomedModelOpen && (
-          <ModalImage
-            imageId={item.nasa_id}
-            imageSrc={item.thumbnailUrl || ''}
-            imageTitle={item.title}
-            imageDescription={item.description}
-            type={item.media_type || ''}
-            onClose={this.handleModalClose}
-          />
-        )}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 }

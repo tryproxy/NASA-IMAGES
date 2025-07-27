@@ -8,9 +8,10 @@ import {
   vi,
   type Mock,
 } from 'vitest';
-import App from '../components/App';
+import TestApp from '../pages/HomePage';
 import { nasaClient } from '../api/nasaClient';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockSearchResults = {
   nasa_id: 'saturn123',
@@ -25,6 +26,14 @@ vi.mock('../api/nasaClient', async () => ({
     search: vi.fn(),
   },
 }));
+
+const App = () => {
+  return (
+    <MemoryRouter initialEntries={['/1']}>
+      <TestApp />
+    </MemoryRouter>
+  );
+};
 
 describe('App', () => {
   beforeEach(() => localStorage.clear());
@@ -85,9 +94,8 @@ describe('App', () => {
 
     render(<App />);
 
-    await waitFor(() => expect(screen.getByText(/failed to fetch/i)));
     await waitFor(() =>
-      expect(screen.getByTestId('error-message')).toBeInTheDocument()
+      expect(screen.getByText(/404 not found/i)).toBeInTheDocument()
     );
   });
 });

@@ -22,7 +22,7 @@ describe('ErrorBoundry', () => {
         <NoErrorDummy />
       </ErrorBoundry>
     );
-    expect(screen.getByText('No errors'));
+    expect(screen.getByText('No errors')).toBeInTheDocument();
   });
 
   it('shows fallback UI component when Error happens', () => {
@@ -57,6 +57,6 @@ describe('ErrorBoundry', () => {
         <NoErrorDummy />
       </ErrorBoundry>
     );
-    expect(screen.getByText('No errors'));
+    expect(screen.getByText('No errors')).toBeInTheDocument();
   });
 });

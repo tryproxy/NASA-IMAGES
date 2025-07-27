@@ -1,83 +1,95 @@
-import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { nasaClient } from '../api/nasaClient';
 import fallbackImg from '../assets/nasa_fallback.jpg';
 import { ModalAssetImage } from './ModalAssetImage';
 import { ModalAssetVideo } from './ModalAssetVideo';
-
-type Props = {
-  imageSrc: string;
-  imageTitle: string;
-  imageDescription: string;
-  imageId: string;
-  type: string;
+export function ModalAsset({
+  assetId,
+  assetSrc,
+  assetTitle,
+  assetType,
+  mode = 'panel',
+  onClose,
+}: {
+  assetId: string;
+  assetSrc: string;
+  assetTitle: string;
+  assetType: string;
+  assetDescription: string;
+  mode?: 'modal' | 'panel';
   onClose: () => void;
-};
+}) {
+  const [assetUrl, setAssetUrl] = useState<string>(assetSrc);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
-type State = {
-  assetUrl: string;
-};
-
-export class ModalImage extends React.Component<Props, State> {
-  onClose = this.props.onClose;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      assetUrl: this.props.imageSrc,
-    };
-  }
-
-  fetchOriginalAsset = async (): Promise<string> => {
-    const asset = await nasaClient.getAsset(this.props.imageId);
+  const fetchOriginalAsset = useCallback(async (): Promise<string> => {
+    const asset = await nasaClient.getAsset(assetId);
     return (
-      asset.original ||
+      asset.large ||
       asset.medium ||
       asset.small ||
-      this.props.imageSrc ||
+      assetSrc ||
+      asset.original ||
       fallbackImg
     );
-  };
+  }, [assetId, assetSrc]);
 
-  async componentDidMount(): Promise<void> {
-    try {
-      const assetUrl = await this.fetchOriginalAsset();
-      this.setState({ assetUrl });
-    } catch (e) {
-      if (e instanceof Error) {
-        throw e.message;
+  useEffect(() => {
+    const fetchAsset = async () => {
+      setIsLoading(true);
+      setIsError(false);
+      try {
+        setAssetUrl(await fetchOriginalAsset());
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error('Failed to fetch asset:', e.message);
+          setIsError(true);
+          throw e;
+        }
+      } finally {
+        setIsLoading(false);
       }
-    }
-  }
+    };
 
-  render() {
-    const { type } = this.props;
-    return (
-      <div
-        data-testid="modal-asset"
-        className="fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md"
-        onClick={this.onClose}
-      >
-        <div className="popup-fade-in flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
-          {type === 'image' ? (
-            <ModalAssetImage
-              imageSrc={this.state.assetUrl}
-              imageAlt={this.props.imageTitle}
-              imageTitle={this.props.imageTitle}
-            />
-          ) : (
-            <ModalAssetVideo
-              videoSrc={this.state.assetUrl}
-              videoTitle={this.props.imageTitle}
-            />
-          )}
+    fetchAsset();
+  }, [fetchOriginalAsset]);
+
+  const assetContainerClass =
+    mode === 'modal'
+      ? 'fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md'
+      : 'w-full h-full flex flex-col border-amber-50/20';
+
+  return (
+    <div
+      data-testid="modal-asset"
+      className={assetContainerClass}
+      onClick={onClose}
+    >
+      {isLoading && (
+        <div className="flex justify-center">
+          <span className="loader text-cente flex h-[60vh] w-full items-center justify-center"></span>
         </div>
-        <button
-          className="absolute top-4 right-4 cursor-pointer"
-          onClick={this.onClose}
-        >
-          Close
-        </button>
-      </div>
-    );
-  }
+      )}
+      {!isLoading && isError && (
+        <div className="flex h-[60vh] w-full items-center justify-center text-center text-red-400">
+          Could not load this NASA asset. Check if the ID is correct.
+        </div>
+      )}
+      {!isLoading && !isError && (
+        <>
+          <div className="popup-fade-in flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
+            {assetType === 'image' ? (
+              <ModalAssetImage imageSrc={assetUrl} imageTitle={assetTitle} />
+            ) : (
+              <ModalAssetVideo videoSrc={assetUrl} videoTitle={assetTitle} />
+            )}
+          </div>
+          <button className="cursor-pointer" onClick={onClose}>
+            ✖ Close
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
