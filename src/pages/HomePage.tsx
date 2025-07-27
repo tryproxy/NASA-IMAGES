@@ -7,6 +7,7 @@ import { Loader } from '../components/Loader';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { NotFoundPage } from './NotFoundPage';
 import { Button } from '../components/Button';
+import { useSearchHistory } from '../hooks/useSearchHistory';
 
 type NasaItem = {
   nasa_id: string;
@@ -20,7 +21,7 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
-  const [inputHistory, setInputHistory] = useState<string[]>([]);
+  const { history, loadHistory, removeEntry, saveHistory } = useSearchHistory();
 
   const navigate = useNavigate();
 
@@ -29,41 +30,8 @@ function App() {
 
   const handleTabsSync = useCallback(
     () => document.visibilityState === 'visible' && loadHistory(),
-    []
+    [loadHistory]
   );
-
-  const loadHistory = () => {
-    const searchHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (searchHistory) {
-      try {
-        const parsedSearchHistory = JSON.parse(searchHistory) as string[];
-        setInputHistory(parsedSearchHistory);
-      } catch (e) {
-        if (e instanceof Error) {
-          console.error(e.message);
-          throw e;
-        }
-      }
-    }
-  };
-
-  const saveHistory = (query: string) => {
-    if (query.trim().length === 0) return;
-
-    setInputHistory((prev) => {
-      const updatedInputHistory = [
-        query.trim(),
-        ...prev.filter((entry) => entry !== query.trim()),
-      ];
-
-      localStorage.setItem(
-        LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedInputHistory)
-      );
-
-      return updatedInputHistory;
-    });
-  };
 
   const searchWithClient = async ({
     query,
@@ -101,17 +69,6 @@ function App() {
     }
   };
 
-  const handleRemoveDropdownResult = (index: number | string) => {
-    setInputHistory((prev) => {
-      const updatedDropdownResult = prev.filter((_, idx) => idx !== index);
-      localStorage.setItem(
-        LOCAL_STORAGE_KEY,
-        JSON.stringify(updatedDropdownResult)
-      );
-      return updatedDropdownResult;
-    });
-  };
-
   useEffect(() => {
     document.addEventListener('visibilitychange', handleTabsSync);
     loadHistory();
@@ -126,7 +83,7 @@ function App() {
 
     return () =>
       document.removeEventListener('visibilitychange', handleTabsSync);
-  }, [handleTabsSync, currentPage]);
+  }, [handleTabsSync, currentPage, loadHistory]);
 
   return (
     <div
@@ -134,9 +91,9 @@ function App() {
       className="flex h-full w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
     >
       <SearchField
-        onRemoveDropdownResult={handleRemoveDropdownResult}
+        onRemoveDropdownResult={removeEntry}
         onSearch={handleSearch}
-        searchQueries={inputHistory}
+        searchQueries={history}
       />
       {isLoading && <Loader />}
       {error ? (

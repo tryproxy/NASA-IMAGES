@@ -3,7 +3,6 @@ export function ModalAssetImage({
   imageTitle,
 }: {
   imageSrc: string;
-  _imageAlt: string;
   imageTitle: string;
 }) {
   return (
