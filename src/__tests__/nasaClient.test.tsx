@@ -19,7 +19,7 @@ describe('nasaClient.search', () => {
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining(
-        'https://images-api.nasa.gov/search?q=mars+rover&page=2&page_size=20'
+        'https://images-api.nasa.gov/search?q=mars+rover&page=2&page_size=10&media_type=image'
       )
     );
   });
