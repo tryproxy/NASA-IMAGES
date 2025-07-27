@@ -94,9 +94,8 @@ describe('App', () => {
 
     render(<App />);
 
-    await waitFor(() => expect(screen.getByText(/404 not found/i)));
-    // await waitFor(() =>
-    //   expect(screen.getByTestId('error-message')).toBeInTheDocument()
-    // );
+    await waitFor(() =>
+      expect(screen.getByText(/404 not found/i)).toBeInTheDocument()
+    );
   });
 });

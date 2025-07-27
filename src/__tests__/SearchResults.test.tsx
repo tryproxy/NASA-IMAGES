@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import dummyThumbnail from '../assets/nasa_fallback.jpg';
 import { SearchResults } from '../components/SearchResults';
+import { MemoryRouter } from 'react-router-dom';
 
 const getDummyItem = (id: string, thumbnail: string | undefined) => ({
   nasa_id: id,
@@ -13,7 +14,7 @@ const getDummyItem = (id: string, thumbnail: string | undefined) => ({
 describe('SearchResults', () => {
   it('shows "no results" message for successful search with empty response', () => {
     render(<SearchResults isSuccessful={true} searchResults={[]} />);
-    expect(screen.getByText(/no results found/i));
+    expect(screen.getByText(/no results found/i)).toBeInTheDocument();
   });
 
   it('does not show "no results" message for unsuccessful search with empty response', () => {
@@ -23,29 +24,33 @@ describe('SearchResults', () => {
 
   it('renders correct number of items', () => {
     render(
-      <SearchResults
-        searchResults={[
-          getDummyItem('1', dummyThumbnail),
-          getDummyItem('2', dummyThumbnail),
-        ]}
-      />
+      <MemoryRouter>
+        <SearchResults
+          searchResults={[
+            getDummyItem('1', dummyThumbnail),
+            getDummyItem('2', dummyThumbnail),
+          ]}
+        />
+      </MemoryRouter>
     );
 
-    expect(screen.getByText('Title-1'));
-    expect(screen.getByText('Title-2'));
+    expect(screen.getByText('Title-1')).toBeInTheDocument();
+    expect(screen.getByText('Title-2')).toBeInTheDocument();
   });
 
   it('renders items without provided thumbnail', () => {
     render(
-      <SearchResults
-        searchResults={[
-          getDummyItem('1', dummyThumbnail),
-          getDummyItem('2', undefined),
-        ]}
-      />
+      <MemoryRouter>
+        <SearchResults
+          searchResults={[
+            getDummyItem('1', dummyThumbnail),
+            getDummyItem('2', undefined),
+          ]}
+        />
+      </MemoryRouter>
     );
 
-    expect(screen.getByText('Title-1'));
+    expect(screen.getByText('Title-1')).toBeInTheDocument();
     expect(screen.queryByText('Title-2')).not.toBeInTheDocument();
   });
 });
