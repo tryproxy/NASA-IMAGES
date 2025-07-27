@@ -29,5 +29,5 @@ export default defineConfig({
       },
     },
   },
-  base: '/react-classes-app/',
+  base: '/react-classes-app',
 });
