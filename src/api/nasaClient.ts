@@ -65,7 +65,8 @@ class NasaClient implements SearchClient {
       const url = new URL(this.ENDPOINT.SEARCH, this.BASE_URL);
       url.searchParams.set('q', query.trim());
       url.searchParams.set('page', page.toString());
-      url.searchParams.set('page_size', '20');
+      url.searchParams.set('page_size', '10');
+      url.searchParams.set('media_type', 'image');
 
       const response = await fetch(url.toString());
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -96,9 +97,10 @@ class NasaClient implements SearchClient {
       (item: { href: string }) => item.href
     );
     return {
-      original: urls.find((url: string) => url.includes('large')),
+      large: urls.find((url: string) => url.includes('large')),
       medium: urls.find((url: string) => url.includes('medium')),
       small: urls.find((url: string) => url.includes('small')),
+      original: urls.find((url: string) => url.includes('orig')),
     };
   }
 }
