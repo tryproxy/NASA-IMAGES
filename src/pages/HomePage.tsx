@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { SearchField } from './SearchField';
-import { SearchResults } from './SearchResults';
+import { SearchField } from '../components/SearchField';
+import { SearchResults } from '../components/SearchResults';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { nasaClient, type SearchClient } from '../api/nasaClient';
-import { Loader } from './Loader';
+import { Loader } from '../components/Loader';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { NotFoundPage } from './NotFoundPage';
+import { Button } from '../components/Button';
 
 type NasaItem = {
   nasa_id: string;
@@ -18,6 +21,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
   const [inputHistory, setInputHistory] = useState<string[]>([]);
+
+  const navigate = useNavigate();
+
+  const { page = '1', detailsId } = useParams();
+  const currentPage = parseInt(page);
 
   const handleTabsSync = useCallback(
     () => document.visibilityState === 'visible' && loadHistory(),
@@ -87,6 +95,10 @@ function App() {
       apiClient: nasaClient,
       options: { page: 1 },
     });
+
+    if (currentPage !== 1) {
+      navigate('/');
+    }
   };
 
   const handleRemoveDropdownResult = (index: number | string) => {
@@ -109,17 +121,17 @@ function App() {
         JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
         INITIAL_QUERY,
       apiClient: nasaClient,
-      options: { page: 1 },
+      options: { page: currentPage },
     });
 
     return () =>
       document.removeEventListener('visibilitychange', handleTabsSync);
-  }, [handleTabsSync]);
+  }, [handleTabsSync, currentPage]);
 
   return (
     <div
       data-testid="app-container"
-      className="flex min-h-screen w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
+      className="flex h-full w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
     >
       <SearchField
         onRemoveDropdownResult={handleRemoveDropdownResult}
@@ -128,14 +140,37 @@ function App() {
       />
       {isLoading && <Loader />}
       {error ? (
-        <div data-testid="error-message" className="text-red-500">
-          {error}
-        </div>
+        <NotFoundPage />
       ) : (
-        <SearchResults
-          isSuccessful={!isLoading && error == null}
-          searchResults={searchResults}
-        />
+        <div className="flex w-full flex-1">
+          <div className="flex flex-1 flex-col items-center gap-4">
+            <SearchResults
+              isSuccessful={!isLoading && error == null}
+              searchResults={searchResults}
+            />
+            {searchResults.length > 1 && (
+              <div className="flex gap-4 p-4">
+                {currentPage > 1 && (
+                  <Button
+                    content="Previous"
+                    onClick={() => navigate(`/${Math.max(1, currentPage - 1)}`)}
+                  />
+                )}
+                {currentPage < searchResults.length - 1 && (
+                  <Button
+                    content="Next"
+                    onClick={() => navigate(`/${currentPage + 1}`)}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+          {detailsId && (
+            <div className="max-h-screen w-[420px] overflow-auto border-l border-amber-50/20 p-4">
+              <Outlet />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

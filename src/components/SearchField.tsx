@@ -119,7 +119,7 @@ export function SearchField({
 
         {isDropdownOpened && (
           <ul
-            className="animate-ease-in absolute mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
+            className="animate-ease-in absolute z-20 mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
             ref={dropdownRef}
           >
             {searchQueries.map((result, idx) => (
