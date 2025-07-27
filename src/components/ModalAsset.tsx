@@ -80,11 +80,7 @@ export function ModalAsset({
         <>
           <div className="popup-fade-in flex max-h-[90vh] max-w-[90vw] cursor-pointer items-center">
             {assetType === 'image' ? (
-              <ModalAssetImage
-                imageSrc={assetUrl}
-                _imageAlt={assetTitle}
-                imageTitle={assetTitle}
-              />
+              <ModalAssetImage imageSrc={assetUrl} imageTitle={assetTitle} />
             ) : (
               <ModalAssetVideo videoSrc={assetUrl} videoTitle={assetTitle} />
             )}
