@@ -15,7 +15,7 @@ export function ModalAsset({
   assetId: string;
   assetSrc: string;
   assetTitle: string;
-  assetType: string;
+  assetType: 'image' | 'video';
   assetDescription: string;
   mode?: 'modal' | 'panel';
   onClose: () => void;

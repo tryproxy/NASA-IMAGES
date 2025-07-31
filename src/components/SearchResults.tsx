@@ -1,13 +1,6 @@
 import { Card } from './Card';
 import { searchTips } from '../constants';
-
-type NasaItem = {
-  nasa_id: string;
-  title: string;
-  description: string;
-  thumbnailUrl?: string;
-  mediaType?: string;
-};
+import type { NasaItem } from '../shared/api/nasa/types';
 
 export function SearchResults({
   searchResults,
