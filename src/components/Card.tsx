@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ModalAsset } from './ModalAsset';
-import { type NasaItem } from '../api/nasaClient';
 import fallbackImage from '../assets/nasa_fallback.jpg';
 import { useNavigate, useParams } from 'react-router-dom';
+import type { NasaItem } from '../shared/api/nasa/types';
 
 export function Card({ item }: { item: NasaItem }) {
   const [isZoomedModelOpen, setIsZoomedModelOpen] = useState<boolean>(false);

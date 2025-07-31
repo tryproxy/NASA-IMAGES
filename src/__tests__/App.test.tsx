@@ -9,9 +9,10 @@ import {
   type Mock,
 } from 'vitest';
 import TestApp from '../pages/HomePage';
-import { nasaClient } from '../api/nasaClient';
+// import { nasaClient } from '../api/nasaClient';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { MemoryRouter } from 'react-router-dom';
+import { nasaClient } from '../shared/api/nasa';
 
 const mockSearchResults = {
   nasa_id: 'saturn123',
@@ -21,7 +22,7 @@ const mockSearchResults = {
   media_type: 'image',
 };
 
-vi.mock('../api/nasaClient', async () => ({
+vi.mock('../shared/api/nasa', async () => ({
   nasaClient: {
     search: vi.fn(),
   },
@@ -46,7 +47,10 @@ describe('App', () => {
 
   it('does initial search with default term when localStorage is empty', async () => {
     const mockSearch = nasaClient.search as Mock;
-    mockSearch.mockResolvedValue([mockSearchResults]);
+    mockSearch.mockResolvedValue({
+      totalHits: 1,
+      items: [mockSearchResults],
+    });
 
     render(<App />);
 
@@ -63,7 +67,10 @@ describe('App', () => {
     const lastSavedSearch = ['jupiter'];
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSavedSearch));
-    mockSearch.mockResolvedValue([mockSearchResults]);
+    mockSearch.mockResolvedValue({
+      totalHits: 1,
+      items: [mockSearchResults],
+    });
 
     render(<App />);
 
@@ -78,7 +85,17 @@ describe('App', () => {
   it('shows loader when search is in progress', async () => {
     const mockSearch = nasaClient.search as Mock;
     mockSearch.mockImplementation(
-      () => new Promise((result) => setTimeout(() => result([]), 1000))
+      () =>
+        new Promise((result) =>
+          setTimeout(
+            () =>
+              result({
+                totalHits: 1,
+                items: [],
+              }),
+            1000
+          )
+        )
     );
 
     render(<App />);

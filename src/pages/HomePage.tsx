@@ -14,8 +14,8 @@ type NasaItem = {
   nasa_id: string;
   title: string;
   description: string;
-  thumbnailUrl?: string;
-  mediaType?: string;
+  thumbnailUrl: string;
+  media_type: 'image' | 'video';
 };
 
 function App() {
