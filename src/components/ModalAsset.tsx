@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { nasaClient } from '../api/nasaClient';
 import fallbackImg from '../assets/nasa_fallback.jpg';
+import { nasaClient } from '../shared/api/nasa';
 import { ModalAssetImage } from './ModalAssetImage';
 import { ModalAssetVideo } from './ModalAssetVideo';
+
 export function ModalAsset({
   assetId,
   assetSrc,
@@ -45,7 +46,6 @@ export function ModalAsset({
         if (e instanceof Error) {
           console.error('Failed to fetch asset:', e.message);
           setIsError(true);
-          throw e;
         }
       } finally {
         setIsLoading(false);

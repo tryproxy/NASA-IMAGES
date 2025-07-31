@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../components/Button';
+import { Loader } from '../components/Loader';
 import { SearchField } from '../components/SearchField';
 import { SearchResults } from '../components/SearchResults';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
-import { nasaClient, type SearchClient } from '../api/nasaClient';
-import { Loader } from '../components/Loader';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { NotFoundPage } from './NotFoundPage';
-import { Button } from '../components/Button';
 import { useSearchHistory } from '../hooks/useSearchHistory';
+import { nasaClient } from '../shared/api/nasa';
+import type { NasaApiClient } from '../shared/api/nasa/types';
+import { NotFoundPage } from './NotFoundPage';
 
 type NasaItem = {
   nasa_id: string;
@@ -40,14 +41,15 @@ function App() {
   }: {
     query: string;
     options: { page: number };
-    apiClient: SearchClient;
+    apiClient: NasaApiClient;
   }) => {
     try {
       const res = await apiClient.search({ query, options });
-      setSearchResults(res);
+      setSearchResults(res.items);
       setError(null);
     } catch (e) {
       if (e instanceof Error) {
+        console.error(e);
         setError(e.message);
       }
     } finally {
