@@ -99,7 +99,10 @@ function App() {
   }, [handleTabsSync, currentPage, loadHistory]);
 
   return (
-    <div className="flex h-full w-full bg-black font-mono text-amber-50">
+    <div
+      data-testid="app-container"
+      className="flex h-full w-full bg-black font-mono text-amber-50"
+    >
       <div className="flex flex-1 flex-col items-center">
         <SearchField
           onRemoveDropdownResult={removeEntry}
