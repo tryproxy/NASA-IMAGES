@@ -2,14 +2,19 @@ import { createBrowserRouter } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { AboutPage } from '../pages/AboutPage';
-import { AppLayout } from '../components/layout/AppLayout';
+import { AppLayout } from './layout/AppLayout';
 import { DetailsPanel } from '../components/DetailsPanel';
 import { ROUTES } from '../shared/model/routes';
+import { Providers } from './providers';
 
 export const router = createBrowserRouter(
   [
     {
-      element: <AppLayout />,
+      element: (
+        <Providers>
+          <AppLayout />
+        </Providers>
+      ),
       children: [
         {
           index: true,
