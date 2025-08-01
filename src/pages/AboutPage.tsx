@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ROUTES } from '../shared/model/routes';
 
 export function AboutPage() {
   return (
@@ -34,7 +35,7 @@ export function AboutPage() {
       </p>
 
       <Link
-        to="/"
+        to={ROUTES.HOME.href()}
         className="inline-block rounded-sm border border-amber-50 px-4 py-2 text-sm hover:bg-amber-50 hover:text-black"
       >
         Back to Home
