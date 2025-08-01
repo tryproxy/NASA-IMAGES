@@ -94,7 +94,7 @@ export function SearchField({
   };
 
   return (
-    <div className="mt-2 w-full max-w-screen-xl rounded-sm border border-transparent bg-gray-950 p-2">
+    <div className="w-full max-w-screen-xl rounded-sm border border-transparent p-2">
       <div className="relative w-full">
         <div className="flex gap-2">
           <input

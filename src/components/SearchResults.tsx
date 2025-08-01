@@ -10,11 +10,11 @@ export function SearchResults({
   isSuccessful?: boolean;
 }) {
   return (
-    <div className="w-full max-w-screen-xl rounded-sm border-amber-50/20 p-6">
-      <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-6">
+    <div className="w-full max-w-screen-xl rounded-sm border-amber-50/20 p-2">
+      <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
         {searchResults.length > 0 &&
           searchResults.map((item) => (
-            <div key={item.nasa_id} className="text-amber-51">
+            <div key={item.nasa_id} className="w-full text-amber-50">
               {item.thumbnailUrl && <Card item={item} />}
             </div>
           ))}
