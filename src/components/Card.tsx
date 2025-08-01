@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { ModalAsset } from './ModalAsset';
 import fallbackImage from '../assets/nasa_fallback.jpg';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import type { NasaItem } from '../shared/api/nasa/types';
+import { useNavigateTo } from '../shared/hooks/useNavigateTo';
 
 export function Card({ item }: { item: NasaItem }) {
   const [isZoomedModelOpen, setIsZoomedModelOpen] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const { goToPage } = useNavigateTo();
   const { page = '1' } = useParams();
 
-  const handleClick = () => navigate(`/${page}/${item.nasa_id}`);
+  const handleClick = () => goToPage(page, item.nasa_id);
   const handleModalClose = () => setIsZoomedModelOpen(false);
 
   return (

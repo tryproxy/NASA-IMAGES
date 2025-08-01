@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { Button } from '../components/Button';
+import { Outlet, useParams } from 'react-router-dom';
 import { Loader } from '../components/Loader';
 import { SearchField } from '../components/SearchField';
 import { SearchResults } from '../components/SearchResults';
@@ -9,6 +8,8 @@ import { useSearchHistory } from '../hooks/useSearchHistory';
 import { nasaClient } from '../shared/api/nasa';
 import type { NasaApiClient } from '../shared/api/nasa/types';
 import { NotFoundPage } from './NotFoundPage';
+import { useNavigateTo } from '../shared/hooks/useNavigateTo';
+import { Pagination } from '../components/Pagination';
 
 type NasaItem = {
   nasa_id: string;
@@ -22,9 +23,12 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<NasaItem[]>([]);
+  const [totalHits, setTotalHits] = useState<number>(0);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
   const { history, loadHistory, removeEntry, saveHistory } = useSearchHistory();
 
-  const navigate = useNavigate();
+  const { goToPage } = useNavigateTo();
 
   const { page = '1', detailsId } = useParams();
   const currentPage = parseInt(page);
@@ -44,8 +48,15 @@ function App() {
     apiClient: NasaApiClient;
   }) => {
     try {
-      const res = await apiClient.search({ query, options });
-      setSearchResults(res.items);
+      const { items, hasNextPage, hasPrevPage, totalHits } =
+        await apiClient.search({
+          query,
+          options,
+        });
+      setSearchResults(items);
+      setHasNextPage(hasNextPage);
+      setHasPrevPage(hasPrevPage);
+      setTotalHits(totalHits);
       setError(null);
     } catch (e) {
       if (e instanceof Error) {
@@ -67,7 +78,7 @@ function App() {
     });
 
     if (currentPage !== 1) {
-      navigate('/');
+      goToPage(1, detailsId);
     }
   };
 
@@ -88,47 +99,41 @@ function App() {
   }, [handleTabsSync, currentPage, loadHistory]);
 
   return (
-    <div
-      data-testid="app-container"
-      className="flex h-full w-full flex-col items-center gap-4 bg-black font-mono text-amber-50"
-    >
-      <SearchField
-        onRemoveDropdownResult={removeEntry}
-        onSearch={handleSearch}
-        searchQueries={history}
-      />
-      {isLoading && <Loader />}
-      {error ? (
-        <NotFoundPage />
-      ) : (
-        <div className="flex w-full flex-1">
-          <div className="flex flex-1 flex-col items-center gap-4">
-            <SearchResults
-              isSuccessful={!isLoading && error == null}
-              searchResults={searchResults}
-            />
-            {searchResults.length > 1 && (
-              <div className="flex gap-4 p-4">
-                {currentPage > 1 && (
-                  <Button
-                    content="Previous"
-                    onClick={() => navigate(`/${Math.max(1, currentPage - 1)}`)}
-                  />
-                )}
-                {currentPage < searchResults.length - 1 && (
-                  <Button
-                    content="Next"
-                    onClick={() => navigate(`/${currentPage + 1}`)}
-                  />
-                )}
-              </div>
+    <div className="flex h-full w-full bg-black font-mono text-amber-50">
+      <div className="flex flex-1 flex-col items-center">
+        <SearchField
+          onRemoveDropdownResult={removeEntry}
+          onSearch={handleSearch}
+          searchQueries={history}
+        />
+
+        <div className="w-full max-w-screen-xl flex-1 overflow-x-hidden overflow-y-auto rounded-xl p-2">
+          <div className="flex-1 overflow-y-hidden rounded-sm border border-amber-50/20 p-2">
+            {isLoading ? (
+              <Loader />
+            ) : error ? (
+              <NotFoundPage />
+            ) : (
+              <SearchResults isSuccessful searchResults={searchResults} />
             )}
           </div>
-          {detailsId && (
-            <div className="max-h-screen w-[420px] overflow-auto border-l border-amber-50/20 p-4">
-              <Outlet />
-            </div>
-          )}
+
+          <div className="shrink-0">
+            {totalHits > 0 && (
+              <Pagination
+                hasNextPage={hasNextPage}
+                hasPrevPage={hasPrevPage}
+                onPrev={() => goToPage(currentPage - 1, detailsId)}
+                onNext={() => goToPage(currentPage + 1, detailsId)}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {detailsId && (
+        <div className="w-[420px] max-w-full shrink-0 border-l border-amber-50/20 p-4 sm:w-[520px] lg:w-[620px]">
+          <Outlet />
         </div>
       )}
     </div>

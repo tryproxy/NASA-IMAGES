@@ -11,17 +11,12 @@ export const ROUTES = {
   },
   PAGE: {
     path: ':page',
-    href:
-      () =>
-      ({ page }: { page: string }) =>
-        `${page}`,
+    href: ({ page }: { page: string | number }) => `/${page}`,
   },
   DETAILS: {
     path: ':detailsId',
-    href:
-      () =>
-      ({ page, detailsId }: { page: string; detailsId: string }) =>
-        `/${page}/${detailsId}`,
+    href: ({ page, detailsId }: { page: string | number; detailsId: string }) =>
+      `/${page}/${detailsId}`,
   },
 } as const;
 

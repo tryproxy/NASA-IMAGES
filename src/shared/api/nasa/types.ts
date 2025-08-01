@@ -58,6 +58,8 @@ export type NasaItem = {
 export type NasaSearchResult = {
   items: NasaItem[];
   totalHits: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 };
 
 // API Asset manifest

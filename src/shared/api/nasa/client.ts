@@ -50,7 +50,12 @@ class NasaClient implements NasaApiClient {
       .filter((item): item is NasaItem => item != null);
 
     const totalHits = data.collection.metadata?.total_hits ?? 0;
-    return { totalHits, items };
+    const hasNextPage =
+      data.collection.links?.some(({ rel }) => rel === 'next') ?? false;
+    const hasPrevPage =
+      data.collection.links?.some(({ rel }) => rel === 'prev') ?? false;
+
+    return { totalHits, items, hasNextPage, hasPrevPage };
   }
 
   async getAsset(id: string): Promise<NasaAssetResult> {
