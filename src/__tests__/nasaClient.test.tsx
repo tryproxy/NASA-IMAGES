@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { nasaClient } from '../api/nasaClient';
+import { nasaClient } from '../shared/api/nasa';
+// import { nasaClient } from '../api/nasaClient';
 
 describe('nasaClient.search', () => {
   beforeEach(() => vi.resetAllMocks());
@@ -19,8 +20,9 @@ describe('nasaClient.search', () => {
 
     expect(fetch).toHaveBeenCalledWith(
       expect.stringContaining(
-        'https://images-api.nasa.gov/search?q=mars+rover&page=2&page_size=10&media_type=image'
-      )
+        'https://images-api.nasa.gov/search?q=mars+rover&page_size=10&media_type=image&page=2'
+      ),
+      { method: 'GET' }
     );
   });
 });
@@ -67,7 +69,7 @@ describe('nasaClient.getAsset', () => {
     ) as unknown as typeof fetch;
 
     await expect(nasaClient.getAsset('throwerDummy_id')).rejects.toThrow(
-      'HTTP 404'
+      'The requested resource does not exist.'
     );
   });
 });

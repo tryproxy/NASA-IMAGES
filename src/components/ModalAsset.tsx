@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { nasaClient } from '../api/nasaClient';
 import fallbackImg from '../assets/nasa_fallback.jpg';
+import { nasaClient } from '../shared/api/nasa';
 import { ModalAssetImage } from './ModalAssetImage';
 import { ModalAssetVideo } from './ModalAssetVideo';
+
 export function ModalAsset({
   assetId,
   assetSrc,
@@ -14,7 +15,7 @@ export function ModalAsset({
   assetId: string;
   assetSrc: string;
   assetTitle: string;
-  assetType: string;
+  assetType: 'image' | 'video';
   assetDescription: string;
   mode?: 'modal' | 'panel';
   onClose: () => void;
@@ -45,7 +46,6 @@ export function ModalAsset({
         if (e instanceof Error) {
           console.error('Failed to fetch asset:', e.message);
           setIsError(true);
-          throw e;
         }
       } finally {
         setIsLoading(false);
@@ -58,7 +58,7 @@ export function ModalAsset({
   const assetContainerClass =
     mode === 'modal'
       ? 'fixed inset-0 flex cursor-pointer items-center justify-center bg-black/90 backdrop-blur-md'
-      : 'w-full h-full flex flex-col border-amber-50/20';
+      : 'w-full h-full flex flex-col border-[var(--color-border)]';
 
   return (
     <div
@@ -72,7 +72,7 @@ export function ModalAsset({
         </div>
       )}
       {!isLoading && isError && (
-        <div className="flex h-[60vh] w-full items-center justify-center text-center text-red-400">
+        <div className="flex h-[60vh] w-full items-center justify-center text-center text-[var(--color-danger)]">
           Could not load this NASA asset. Check if the ID is correct.
         </div>
       )}

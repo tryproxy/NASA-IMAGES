@@ -8,7 +8,8 @@ const getDummyItem = (id: string, thumbnail: string | undefined) => ({
   nasa_id: id,
   title: `Title-${id}`,
   description: `Description${id}`,
-  thumbnailUrl: thumbnail,
+  thumbnailUrl: thumbnail ?? '',
+  media_type: 'image' as const,
 });
 
 describe('SearchResults', () => {
