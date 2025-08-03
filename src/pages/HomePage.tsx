@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import { Flyout } from '../components/Flyout';
 import { Loader } from '../components/Loader';
+import { Pagination } from '../components/Pagination';
 import { SearchField } from '../components/SearchField';
 import { SearchResults } from '../components/SearchResults';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { useSearchHistory } from '../hooks/useSearchHistory';
 import { nasaClient } from '../shared/api/nasa';
 import type { NasaApiClient } from '../shared/api/nasa/types';
-import { NotFoundPage } from './NotFoundPage';
 import { useNavigateTo } from '../shared/hooks/useNavigateTo';
-import { Pagination } from '../components/Pagination';
+import { usePinnedItemsStore } from '../shared/model/usePinnedItemsStore';
+import { NotFoundPage } from './NotFoundPage';
 
 type NasaItem = {
   nasa_id: string;
@@ -32,6 +34,9 @@ function App() {
 
   const { page = '1', detailsId } = useParams();
   const currentPage = parseInt(page);
+
+  const items = usePinnedItemsStore((state) => state.saved);
+  const pinsCount = Object.keys(items).length;
 
   const handleTabsSync = useCallback(
     () => document.visibilityState === 'visible' && loadHistory(),
@@ -101,7 +106,7 @@ function App() {
   return (
     <div
       data-testid="app-container"
-      className="flex h-full w-full bg-black font-mono text-amber-50"
+      className="flex h-full w-full bg-[var(--color-bg)] font-mono text-[var(--color-fg)]"
     >
       <div className="flex flex-1 flex-col items-center">
         <SearchField
@@ -111,7 +116,7 @@ function App() {
         />
 
         <div className="w-full max-w-screen-xl flex-1 overflow-x-hidden overflow-y-auto rounded-xl p-2">
-          <div className="flex-1 overflow-y-hidden rounded-sm border border-amber-50/20 p-2">
+          <div className="flex-1 overflow-y-hidden rounded-sm border border-[var(--color-border)] p-2">
             {isLoading ? (
               <Loader />
             ) : error ? (
@@ -134,8 +139,9 @@ function App() {
         </div>
       </div>
 
+      {pinsCount > 0 && <Flyout />}
       {detailsId && (
-        <div className="w-[420px] max-w-full shrink-0 border-l border-amber-50/20 p-4 sm:w-[520px] lg:w-[620px]">
+        <div className="w-[420px] max-w-full shrink-0 border-l border-[var(--color-border)] p-4 sm:w-[520px] lg:w-[620px]">
           <Outlet />
         </div>
       )}
