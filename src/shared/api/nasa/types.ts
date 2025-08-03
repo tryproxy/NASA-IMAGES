@@ -46,7 +46,7 @@ export interface NasaApiItemLink {
   height?: number;
 }
 
-// Parsed Searched Item
+/** Parsed Searched Item */
 export type NasaItem = {
   nasa_id: string;
   title: string;
@@ -75,7 +75,7 @@ export interface NasaApiAsset {
   href: string;
 }
 
-// Parsed Asset manifest
+/** Parsed Asset manifest */
 export type NasaAssetResult = {
   original?: string;
   large?: string;
@@ -86,7 +86,6 @@ export type NasaAssetResult = {
 };
 
 // Client wrapper
-
 export type NasaApiClentSearchParams = {
   query: string;
   options?: { page?: number; mediaType?: string; pageSize?: number };
