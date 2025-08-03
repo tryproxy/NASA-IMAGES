@@ -18,6 +18,10 @@ export function Flyout() {
     if (ref.current) {
       ref.current.href = url;
       ref.current.download = `${count}_items.csv`;
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1000);
     }
   };
 

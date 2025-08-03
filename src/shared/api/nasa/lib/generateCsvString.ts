@@ -1,7 +1,7 @@
 import type { NasaItem } from '../types';
 
 export const generateCsvString = (items: Record<string, NasaItem>) => {
-  const header = ['NASA ID', 'Media Type', 'Title', 'Description'];
+  const header = ['NASA_ID', 'Media_Type', 'Title', 'Description'];
   const body = Object.values(items).map(
     ({ nasa_id, title, description, media_type }) => [
       nasa_id,
