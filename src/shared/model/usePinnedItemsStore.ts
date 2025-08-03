@@ -3,7 +3,7 @@ import type { NasaItem } from '../api/nasa/types';
 
 interface PinnedItemsStore {
   saved: Record<string, NasaItem>;
-  isSaved: (id: string) => boolean;
+  has: (id: string) => boolean;
   add: (item: NasaItem) => void;
   remove: (id: string) => void;
   clear: () => void;
@@ -13,7 +13,7 @@ const initialState: Record<string, NasaItem> = {};
 
 export const usePinnedItemsStore = create<PinnedItemsStore>((set, get) => ({
   saved: initialState,
-  isSaved: (id) => id in get().saved,
+  has: (id) => id in get().saved,
 
   add: (item) =>
     set((state) => ({
