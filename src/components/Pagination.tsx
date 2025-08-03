@@ -14,11 +14,21 @@ export function Pagination({
   return (
     <div className="flex gap-4 pt-4">
       {hasPrevPage ? (
-        <Button content="Previous" onClick={onPrev} />
+        <Button
+          className="border border-[var(--color-surface)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
+          content="Back"
+          onClick={onPrev}
+        />
       ) : (
         <Button className="invisible" content="Previous" onClick={() => {}} />
       )}
-      {hasNextPage && <Button content="Next" onClick={onNext} />}
+      {hasNextPage && (
+        <Button
+          className="border border-[var(--color-surface)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
+          content="Next"
+          onClick={onNext}
+        />
+      )}
     </div>
   );
 }

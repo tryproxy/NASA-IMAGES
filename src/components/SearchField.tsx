@@ -100,7 +100,7 @@ export function SearchField({
           <input
             data-testid="search-input"
             ref={inputRef}
-            className="w-full rounded-sm border border-amber-50/20 bg-gray-950 px-4 py-2 text-sm text-amber-50 focus:outline-none"
+            className="w-full rounded-sm border border-[var(--color-border)] bg-[var(--color-surface))] px-4 py-2 text-sm text-[var(--color-fg)] focus:outline-none"
             type="text"
             placeholder={searchQueries.length > 0 ? hovered : searchPlaceholder}
             value={input}
@@ -110,7 +110,7 @@ export function SearchField({
             onBlur={handleDropdownBlur}
           />
           <button
-            className="cursor-pointer rounded-sm bg-amber-50 px-4 py-2 text-sm font-bold text-black transition hover:bg-white"
+            className="cursor-pointer rounded-sm bg-[var(--color-primary)] px-4 py-2 text-sm font-bold text-[var(--color-surface)] transition hover:bg-[var(--color-primary-hover)]"
             onClick={handleSearchInputClick}
           >
             Search
@@ -119,7 +119,7 @@ export function SearchField({
 
         {isDropdownOpened && (
           <ul
-            className="animate-ease-in absolute z-20 mt-1 w-full rounded-sm border border-gray-700 bg-black/30 backdrop-blur-md"
+            className="animate-ease-in absolute z-20 mt-1 w-full rounded-sm border border-[var(--color-border)] bg-black/30 backdrop-blur-md"
             ref={dropdownRef}
           >
             {searchQueries.map((result, idx) => (
@@ -134,10 +134,10 @@ export function SearchField({
                   onMouseOver={handleMouseOver}
                   onClick={handleSearchAutocompleteClick}
                 >
-                  <span className="w-full cursor-pointer">{result}</span>
+                  <span className="w-full">{result}</span>
                 </li>
                 <button
-                  className="ml-2 cursor-pointer text-lg text-red-200/30 hover:text-red-200"
+                  className="ml-2 cursor-pointer text-lg text-[var(--color-danger-soft)] hover:text-[var(--color-danger)]"
                   onBlur={handleDropdownBlur}
                   onClick={() => onRemoveDropdownResult(idx)}
                 >

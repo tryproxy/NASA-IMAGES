@@ -3,7 +3,7 @@ import { ROUTES } from '../shared/model/routes';
 
 export function AboutPage() {
   return (
-    <div className="h-full min-w-full bg-black p-8 text-amber-50">
+    <div className="h-full min-w-full bg-[var(--color-bg)] p-8 text-[var(--color-fg-secondary)]">
       <h1 className="mb-4 text-2xl font-bold">About This App</h1>
 
       <p className="mb-4">
@@ -12,7 +12,7 @@ export function AboutPage() {
           href="https://rs.school/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-50 underline hover:text-white"
+          className="text-[var(--color-fg-secondary)] underline hover:text-[var(--color-secondary)]"
         >
           RS School React Course
         </a>
@@ -34,10 +34,7 @@ export function AboutPage() {
         </a>
       </p>
 
-      <Link
-        to={ROUTES.HOME.href()}
-        className="inline-block rounded-sm border border-amber-50 px-4 py-2 text-sm hover:bg-amber-50 hover:text-black"
-      >
+      <Link to={ROUTES.HOME.href()} className="link hover:link cursor-pointer">
         Back to Home
       </Link>
     </div>
