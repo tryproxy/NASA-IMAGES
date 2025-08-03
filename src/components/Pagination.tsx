@@ -15,7 +15,7 @@ export function Pagination({
     <div className="flex gap-4 pt-4">
       {hasPrevPage ? (
         <Button
-          className="border border-[var(--color-surface)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
+          className="border border-[var(--color-border)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
           content="Back"
           onClick={onPrev}
         />
@@ -24,7 +24,7 @@ export function Pagination({
       )}
       {hasNextPage && (
         <Button
-          className="border border-[var(--color-surface)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
+          className="border border-[var(--color-border)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
           content="Next"
           onClick={onNext}
         />

@@ -28,7 +28,7 @@ export function AboutPage() {
           href="https://github.com/asdqdsa"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-50 underline hover:text-white"
+          className="text-[var(--color-fg-secondary)] underline hover:text-[var(--color-secondary)]"
         >
           github.com/asdqdsa
         </a>

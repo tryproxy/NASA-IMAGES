@@ -28,14 +28,19 @@
 }
 
 [data-theme='light'] {
-  --color-bg: #fff1f3;
-  --color-surface: #fef2f4;
-  --color-fg: #2e1f27;
-  --color-fg-secondary: #7a656c;
-  --color-border: #eecdd3;
-  --color-overlay: #f9e5ebcc;
-  --color-danger: #e11d48;
-  --color-danger-soft: #fda4af;
+  --color-bg: #fdf6e3;
+  --color-surface: #f4e2c3;
+  --color-surface2: #cba982;
+  --color-surface3: #d6b98d;
+  --color-fg: #3f2f1b;
+  --color-fg-secondary: #7a5e42;
+  --color-border: #cba982;
+  --color-overlay: #ffedc233;
+  --color-primary: #b86b00;
+  --color-primary-hover: #944f00;
+  --color-secondary: #ffb347;
+  --color-danger: #c92400;
+  --color-danger-soft: #fbbbad;
 }
 
 @layer components {
