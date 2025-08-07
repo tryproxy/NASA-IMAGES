@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { SearchField } from '../components/SearchField';
+import { SearchField } from '../features/search/ui/SearchField';
 
 const dummyProps = {
   searchQueries: [],

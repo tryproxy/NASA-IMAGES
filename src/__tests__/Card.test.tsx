@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Card } from '../components/Card';
 import { MemoryRouter } from 'react-router-dom';
 import type { NasaItem } from '../shared/api/nasa/types';
+import { Card } from '../entities/Card/ui/Card';
 
 const dummyItem: NasaItem = {
   nasa_id: '0123',

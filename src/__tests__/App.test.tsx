@@ -9,10 +9,12 @@ import {
   type Mock,
 } from 'vitest';
 import TestApp from '../pages/HomePage';
-// import { nasaClient } from '../api/nasaClient';
-import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../constants';
 import { MemoryRouter } from 'react-router-dom';
 import { nasaClient } from '../shared/api/nasa';
+import {
+  INITIAL_QUERY,
+  LOCAL_STORAGE_KEY,
+} from '../features/search/model/constants';
 
 const mockSearchResults = {
   nasa_id: 'saturn123',
