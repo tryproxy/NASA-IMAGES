@@ -1,13 +1,17 @@
-import { Card } from './Card';
-import { searchTips } from '../constants';
-import type { NasaItem } from '../shared/api/nasa/types';
+import { searchTips } from '../model/constants';
+import type { NasaItem } from '../../../shared/api/nasa/types';
+import { PinnableCard } from '../../pinned';
 
 export function SearchResults({
   searchResults,
   isSuccessful,
+  // hasCursor,
+  // cursorRef,
 }: {
   searchResults: NasaItem[];
   isSuccessful?: boolean;
+  // hasCurosor?: boolean;
+  // cursorRef: React.Ref<HTMLDivElement>;
 }) {
   return (
     <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)] p-2">
@@ -15,7 +19,7 @@ export function SearchResults({
         {searchResults.length > 0 &&
           searchResults.map((item) => (
             <div key={item.nasa_id} className="w-full text-[var(--color-fg)]">
-              {item.thumbnailUrl && <Card item={item} />}
+              {item.thumbnailUrl && <PinnableCard item={item} />}
             </div>
           ))}
       </div>

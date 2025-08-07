@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { searchTips } from '../constants';
+import { getSearchTip } from '../lib/getSearchTip';
 
-const searchPlaceholder =
-  searchTips[Math.floor(Math.random() * searchTips.length)];
+const searchPlaceholder = getSearchTip();
 
 export function SearchField({
   searchQueries,

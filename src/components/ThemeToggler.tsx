@@ -1,5 +1,5 @@
 import { useThemeContext } from '../shared/model/context/useThemeContext';
-import { Button } from './Button';
+import { Button } from '../shared/ui/kit/Button';
 
 export function ThemeToggler() {
   const { theme, toggleTheme } = useThemeContext();
