@@ -57,10 +57,13 @@ describe('App', () => {
     render(<App />);
 
     await waitFor(() =>
-      expect(mockSearch).toHaveBeenCalledWith({
-        query: INITIAL_QUERY,
-        options: { page: 1 },
-      })
+      expect(mockSearch).toHaveBeenCalledWith(
+        {
+          query: INITIAL_QUERY,
+          params: { page: 1 },
+        },
+        expect.anything()
+      )
     );
   });
 
@@ -77,10 +80,10 @@ describe('App', () => {
     render(<App />);
 
     await waitFor(() =>
-      expect(mockSearch).toHaveBeenCalledWith({
-        query: lastSavedSearch[0],
-        options: { page: 1 },
-      })
+      expect(mockSearch).toHaveBeenCalledWith(
+        { query: lastSavedSearch[0], params: { page: 1 } },
+        expect.anything()
+      )
     );
   });
 
