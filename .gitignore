@@ -27,3 +27,6 @@ coverage
 # Envs
 .env.local
 .env.*.local
+
+
+bundle.*
