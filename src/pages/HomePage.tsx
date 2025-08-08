@@ -1,6 +1,6 @@
+import { Flyout } from '@/features/pinned';
+import { SearchLayout } from '@/features/search';
 import { Outlet, useParams } from 'react-router-dom';
-import { SearchLayout } from '../features/search';
-import { Flyout } from '../features/pinned';
 
 function App() {
   const { detailsId } = useParams();

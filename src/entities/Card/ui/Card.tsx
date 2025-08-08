@@ -1,7 +1,7 @@
+import type { NasaItem } from '@/shared/api/nasa/types';
+import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useParams } from 'react-router-dom';
 import fallbackImage from '../assets/nasa_fallback.jpg';
-import type { NasaItem } from '../../../shared/api/nasa/types';
-import { useNavigateTo } from '../../../shared/hooks/useNavigateTo';
 import { PinChip } from './PinChip';
 
 export function Card({

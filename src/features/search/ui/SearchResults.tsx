@@ -1,6 +1,6 @@
+import { PinnableCard } from '@/features/pinned';
+import type { NasaItem } from '@/shared/api/nasa/types';
 import { searchTips } from '../model/constants';
-import type { NasaItem } from '../../../shared/api/nasa/types';
-import { PinnableCard } from '../../pinned';
 
 export function SearchResults({
   searchResults,
@@ -13,6 +13,8 @@ export function SearchResults({
   // hasCurosor?: boolean;
   // cursorRef: React.Ref<HTMLDivElement>;
 }) {
+  // TODO redo PinnableCard/crossimport
+
   return (
     <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)] p-2">
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">

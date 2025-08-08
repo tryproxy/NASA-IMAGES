@@ -5,7 +5,7 @@ import { ThemeProvider } from '../shared/model/context/ThemeProvider';
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>{children}</ThemeProvider>;
+      <ThemeProvider>{children}</ThemeProvider>
     </QueryClientProvider>
   );
 }

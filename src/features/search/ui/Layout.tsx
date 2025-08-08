@@ -1,11 +1,11 @@
+import { NotFoundPage } from '@/pages/NotFoundPage';
+import { nasaClient } from '@/shared/api/nasa';
+import type { NasaApiClient, NasaItem } from '@/shared/api/nasa/types';
+import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../../components/Loader';
 import { Pagination } from '../../../components/Pagination';
-import { NotFoundPage } from '../../../pages/NotFoundPage';
-import { nasaClient } from '../../../shared/api/nasa';
-import type { NasaApiClient, NasaItem } from '../../../shared/api/nasa/types';
-import { useNavigateTo } from '../../../shared/hooks/useNavigateTo';
 import { useSearchHistory } from '../hooks/useSearchHistory';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../model/constants';
 import { SearchField } from './SearchField';

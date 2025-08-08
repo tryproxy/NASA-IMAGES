@@ -1,5 +1,5 @@
+import { useTheme } from '@/shared/hooks/useTheme';
 import { useEffect } from 'react';
-import { useTheme } from '../../hooks/useTheme';
 import { ThemeContext } from './useThemeContext';
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {

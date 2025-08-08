@@ -6,7 +6,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwind(), viteTsconfigPaths()],
+  plugins: [react(), viteTsconfigPaths(), tailwind()],
   test: {
     globals: true,
     environment: 'jsdom',
@@ -30,5 +30,5 @@ export default defineConfig({
       },
     },
   },
-  base: '/',
+  // base: '/',
 });

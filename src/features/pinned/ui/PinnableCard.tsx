@@ -1,5 +1,5 @@
-import { Card } from '../../../entities/Card/ui/Card';
-import type { NasaItem } from '../../../shared/api/nasa/types';
+import { Card } from '@/entities/Card/ui/Card';
+import type { NasaItem } from '@/shared/api/nasa/types';
 import { pinnedItemsStore } from '../model/pinnedItemsStore';
 
 export function PinnableCard({ item }: { item: NasaItem }) {

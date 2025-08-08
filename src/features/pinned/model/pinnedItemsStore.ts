@@ -1,5 +1,5 @@
+import type { NasaItem } from '@/shared/api/nasa/types';
 import { create } from 'zustand';
-import type { NasaItem } from '../../../shared/api/nasa/types';
 
 interface PinnedItemsStore {
   saved: Record<string, NasaItem>;
