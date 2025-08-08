@@ -88,10 +88,16 @@ export type NasaAssetResult = {
 // Client wrapper
 export type NasaApiClentSearchParams = {
   query: string;
-  options?: { page?: number; mediaType?: string; pageSize?: number };
+  params?: { page?: number; mediaType?: string; pageSize?: number };
 };
 
 export interface NasaApiClient {
-  search: (args: NasaApiClentSearchParams) => Promise<NasaSearchResult>;
-  getAsset: (id: string) => Promise<NasaAssetResult>;
+  search: (
+    args: NasaApiClentSearchParams,
+    request?: Omit<RequestInit, 'method'>
+  ) => Promise<NasaSearchResult>;
+  getAsset: (
+    id: string,
+    request?: Omit<RequestInit, 'method'>
+  ) => Promise<NasaAssetResult>;
 }

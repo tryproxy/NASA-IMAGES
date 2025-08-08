@@ -16,21 +16,22 @@ class NasaClient implements NasaApiClient {
     this.api = api;
   }
 
-  async search({
-    query,
-    options = {},
-  }: NasaApiClentSearchParams): Promise<NasaSearchResult> {
-    const { mediaType = 'image', pageSize = 10, ...params } = options;
-    const searchParams = {
+  async search(
+    { query, params = {} }: NasaApiClentSearchParams,
+    req?: Omit<RequestInit, 'method'>
+  ): Promise<NasaSearchResult> {
+    const { mediaType = 'image', pageSize = 10, ...rest } = params;
+    const queryParams = {
       q: query.trim(),
       page_size: pageSize,
       media_type: mediaType,
-      ...params,
+      ...rest,
     };
 
     const data = await this.api.get<NasaApiSearchResponse>(
       NASA_ENDPOINTS.SEARCH,
-      searchParams
+      queryParams,
+      req
     );
 
     const items = data.collection.items
@@ -58,9 +59,13 @@ class NasaClient implements NasaApiClient {
     return { totalHits, items, hasNextPage, hasPrevPage };
   }
 
-  async getAsset(id: string): Promise<NasaAssetResult> {
+  async getAsset(
+    id: string,
+    req?: Omit<RequestInit, 'method'>
+  ): Promise<NasaAssetResult> {
     const data = await this.api.get<NasaApiAssetResponse>(
-      NASA_ENDPOINTS.ASSET(id)
+      NASA_ENDPOINTS.ASSET(id),
+      req
     );
 
     const urls = data.collection.items.map((item) => item.href);
