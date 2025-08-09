@@ -10,13 +10,16 @@ export function SearchResults({
 }: {
   searchResults: NasaItem[];
   isSuccessful?: boolean;
+  isFetching?: boolean;
+  isRefetching?: boolean;
+  isPending?: boolean;
   // hasCurosor?: boolean;
   // cursorRef: React.Ref<HTMLDivElement>;
 }) {
   // TODO redo PinnableCard/crossimport
 
   return (
-    <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)] p-2">
+    <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)]">
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
         {searchResults.length > 0 &&
           searchResults.map((item) => (

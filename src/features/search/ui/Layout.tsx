@@ -1,36 +1,54 @@
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Loader } from '../../../components/Loader';
-import { Pagination } from '../../../components/Pagination';
+import { Pagination } from '../../../shared/ui-kit/Pagination';
 import { QUERIES } from '../api/queries';
 import { useSearchHistory } from '../hooks/useSearchHistory';
 import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../model/constants';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
+import { CardSkeleton } from '@/entities/Card/ui/CardSkeleton';
+import { RefreshButton } from './RefreshButton';
 
 export function SearchLayout() {
   const { history, loadHistory, removeEntry, saveHistory } = useSearchHistory();
   const { goToPage } = useNavigateTo();
   const { page = '1', detailsId } = useParams();
   const currentPage = parseInt(page);
-
+  const qc = useQueryClient();
   const [query, setQuery] = useState<string>(
     JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
       INITIAL_QUERY
   );
 
-  const { data, isLoading, isError } = useQuery(
-    QUERIES.SEARCH.query({ query, params: { page: currentPage } })
-  );
+  const {
+    data,
+    isError,
+    isFetching,
+    isPending,
+    isSuccess,
+    isRefetching,
+    dataUpdatedAt,
+  } = useQuery({
+    ...QUERIES.SEARCH.query({ query, params: { page: currentPage } }),
+    // placeholderData: (prev) => prev,
+  });
+
+  const handleRefresh = () => {
+    qc.invalidateQueries({
+      queryKey: QUERIES.SEARCH.query({ query, params: { page: currentPage } })
+        .queryKey,
+      refetchType: 'all',
+    });
+  };
 
   const {
     items = [],
     hasNextPage = true,
     hasPrevPage = true,
-    totalHits = 0,
+    totalHits = 1,
   } = data ?? {};
 
   const handleTabsSync = useCallback(
@@ -58,6 +76,11 @@ export function SearchLayout() {
 
   return (
     <div className="flex flex-1 flex-col items-center">
+      <RefreshButton
+        dataUpdatedAt={dataUpdatedAt}
+        isRefetching={isRefetching}
+        onClick={handleRefresh}
+      />
       <SearchField
         onRemoveDropdownResult={removeEntry}
         onSearch={handleSearch}
@@ -66,12 +89,22 @@ export function SearchLayout() {
 
       <div className="w-full max-w-screen-xl flex-1 overflow-x-hidden overflow-y-auto rounded-xl p-2">
         <div className="flex-1 overflow-y-hidden rounded-sm border border-[var(--color-border)] p-2">
-          {isLoading ? (
-            <Loader />
+          {isPending ? (
+            <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
+              {Array.from({ length: 10 }).map((_, idx) => (
+                <CardSkeleton key={idx} />
+              ))}
+            </div>
           ) : isError ? (
             <NotFoundPage />
           ) : (
-            <SearchResults isSuccessful searchResults={items} />
+            <SearchResults
+              isFetching={isFetching}
+              isPending={isPending}
+              isRefetching={isRefetching}
+              isSuccessful={isSuccess}
+              searchResults={items}
+            />
           )}
         </div>
 

@@ -25,6 +25,9 @@
   --color-secondary: #e6e6e6;
   --color-danger: #f87171;
   --color-danger-soft: #fecaca;
+  --color-skeleton-shimmer: #ffffff14;
+  --color-loader: #0003;
+  --color-loader2: #fff3;
 }
 
 [data-theme='light'] {
@@ -41,6 +44,9 @@
   --color-secondary: #ffb347;
   --color-danger: #c92400;
   --color-danger-soft: #fbbbad;
+  --color-skeleton-shimmer: #0000000a;
+  --color-loader: #cba98233;
+  --color-loader2: #f4e2c333;
 }
 
 @layer components {
@@ -115,4 +121,28 @@
 
 .popup-fade-in {
   animation: popup-fade-in 100ms ease-out forwards;
+}
+
+.skeleton {
+  @apply relative overflow-hidden bg-[var(--color-surface3)];
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-skeleton-shimmer),
+    transparent
+  );
+  animation: skeleton-loading 1400ms infinite;
+}
+
+@keyframes skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
 }
