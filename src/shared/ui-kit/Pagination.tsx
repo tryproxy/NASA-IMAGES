@@ -1,4 +1,4 @@
-import { Button } from '../shared/ui/kit/Button';
+import { Button } from './Button';
 
 export function Pagination({
   hasNextPage,
@@ -13,19 +13,22 @@ export function Pagination({
 }) {
   return (
     <div className="flex gap-4 pt-4">
-      {hasPrevPage ? (
+      {hasPrevPage && (
         <Button
           className="border border-[var(--color-border)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
           content="Back"
+          isDisabled={!hasPrevPage}
           onClick={onPrev}
         />
-      ) : (
-        <Button className="invisible" content="Previous" onClick={() => {}} />
       )}
+
+      {/*<Button className="invisible" content="Previous" onClick={() => {}} />*/}
+
       {hasNextPage && (
         <Button
           className="border border-[var(--color-border)] bg-transparent text-[var(--color-surface2)] hover:bg-[var(--color-surface2)] hover:text-[var(--color-surface)]"
           content="Next"
+          isDisabled={!hasNextPage}
           onClick={onNext}
         />
       )}

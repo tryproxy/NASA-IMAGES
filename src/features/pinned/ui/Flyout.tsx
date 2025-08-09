@@ -1,7 +1,7 @@
-import { Button } from '@/shared/ui/kit/Button';
 import { useRef } from 'react';
 import { generateCsvString } from '../lib/generateCsvString';
 import { pinnedItemsStore } from '../model/pinnedItemsStore';
+import { Button } from '@/shared/ui-kit/Button';
 
 export function Flyout() {
   const ref = useRef<HTMLAnchorElement>(null);
