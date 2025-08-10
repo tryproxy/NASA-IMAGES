@@ -1,6 +1,6 @@
+import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useParams } from 'react-router-dom';
 import { ModalAsset } from './ModalAsset';
-import { useNavigateTo } from '../shared/hooks/useNavigateTo';
 
 export function DetailsPanel() {
   const { goToPage } = useNavigateTo();

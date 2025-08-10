@@ -1,3 +1,4 @@
+import { CardSkeleton } from '@/entities/Card/ui/CardSkeleton';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -6,11 +7,10 @@ import { useParams } from 'react-router-dom';
 import { Pagination } from '../../../shared/ui-kit/Pagination';
 import { QUERIES } from '../api/queries';
 import { useSearchHistory } from '../hooks/useSearchHistory';
-import { INITIAL_QUERY, LOCAL_STORAGE_KEY } from '../model/constants';
+import { INITIAL_QUERY } from '../model/constants';
+import { RefreshButton } from './RefreshButton';
 import { SearchField } from './SearchField';
 import { SearchResults } from './SearchResults';
-import { CardSkeleton } from '@/entities/Card/ui/CardSkeleton';
-import { RefreshButton } from './RefreshButton';
 
 export function SearchLayout() {
   const { history, loadHistory, removeEntry, saveHistory } = useSearchHistory();
@@ -18,10 +18,7 @@ export function SearchLayout() {
   const { page = '1', detailsId } = useParams();
   const currentPage = parseInt(page);
   const qc = useQueryClient();
-  const [query, setQuery] = useState<string>(
-    JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]')[0] ||
-      INITIAL_QUERY
-  );
+  const [query, setQuery] = useState<string>(history[0] || INITIAL_QUERY);
 
   const {
     data,
@@ -33,7 +30,7 @@ export function SearchLayout() {
     dataUpdatedAt,
   } = useQuery({
     ...QUERIES.SEARCH.query({ query, params: { page: currentPage } }),
-    // placeholderData: (prev) => prev,
+    placeholderData: (prev) => prev,
   });
 
   const handleRefresh = () => {
@@ -89,7 +86,7 @@ export function SearchLayout() {
 
       <div className="w-full max-w-screen-xl flex-1 overflow-x-hidden overflow-y-auto rounded-xl p-2">
         <div className="flex-1 overflow-y-hidden rounded-sm border border-[var(--color-border)] p-2">
-          {isPending ? (
+          {isFetching ? (
             <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
               {Array.from({ length: 10 }).map((_, idx) => (
                 <CardSkeleton key={idx} />

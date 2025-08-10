@@ -65,6 +65,7 @@ class NasaClient implements NasaApiClient {
   ): Promise<NasaAssetResult> {
     const data = await this.api.get<NasaApiAssetResponse>(
       NASA_ENDPOINTS.ASSET(id),
+      undefined,
       req
     );
 
