@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { LOCAL_STORAGE_KEY } from '../constants';
+import { LOCAL_STORAGE_KEY } from '../model/constants';
 
 export const useSearchHistory = () => {
   const [history, setHistory] = useState<string[]>([]);

@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { searchTips } from '../constants';
+import { getSearchTip } from '../lib/getSearchTip';
 
-const searchPlaceholder =
-  searchTips[Math.floor(Math.random() * searchTips.length)];
+const searchPlaceholder = getSearchTip();
 
 export function SearchField({
   searchQueries,
@@ -100,7 +99,7 @@ export function SearchField({
           <input
             data-testid="search-input"
             ref={inputRef}
-            className="w-full rounded-sm border border-[var(--color-border)] bg-[var(--color-surface))] px-4 py-2 text-sm text-[var(--color-fg)] focus:outline-none"
+            className="w-full rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm text-[var(--color-fg)] focus:outline-none"
             type="text"
             placeholder={searchQueries.length > 0 ? hovered : searchPlaceholder}
             value={input}

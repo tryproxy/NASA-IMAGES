@@ -7,9 +7,9 @@ export function ModalAssetImage({
 }) {
   return (
     <div className="flex max-w-[80vw] cursor-default flex-col items-center justify-center">
-      <div className="relative flex max-h-[80vh] max-w-full items-center justify-center">
+      <div className="relative flex max-h-[80vh] max-w-full items-center justify-center rounded-md">
         <img
-          className="pointer-events-none absolute bottom-[-40px] left-[-40px] z-0 scale-125 opacity-50 blur-[100px]"
+          className="pointer-events-none absolute inset-0 -z-10 scale-110 object-cover opacity-50 blur-3xl"
           src={imageSrc}
           alt=""
           aria-hidden

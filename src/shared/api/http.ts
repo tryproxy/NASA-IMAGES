@@ -1,7 +1,12 @@
 export interface HttpClient {
   get<T>(
     endpoint: string,
-    params?: Record<string, string | number>
+    requestOptions?: Omit<RequestInit, 'method'>
+  ): Promise<T>;
+  get<T>(
+    endpoint: string,
+    params?: Record<string, string | number>,
+    requestOptions?: Omit<RequestInit, 'method'>
   ): Promise<T>;
 }
 
@@ -33,10 +38,12 @@ export class Http implements HttpClient {
     endpoint,
     method,
     params,
+    requestOptions,
   }: {
     endpoint: string;
     method: 'GET';
     params?: Record<string, string | number>;
+    requestOptions?: RequestInit;
   }): Promise<T> {
     const url = new URL(endpoint, this.baseUrl);
 
@@ -46,7 +53,7 @@ export class Http implements HttpClient {
       );
     }
 
-    const res = await fetch(url.toString(), { method });
+    const res = await fetch(url.toString(), { method, ...requestOptions });
 
     if (!res.ok) {
       const handler = this.statusCodeHandlers[res.status];
@@ -61,8 +68,14 @@ export class Http implements HttpClient {
 
   async get<T>(
     endpoint: string,
-    params?: Record<string, string | number>
+    params?: Record<string, string | number>,
+    requestOptions?: Omit<RequestInit, 'method'>
   ): Promise<T> {
-    return this.request<T>({ endpoint, method: 'GET', params });
+    return this.request<T>({
+      endpoint,
+      method: 'GET',
+      params,
+      requestOptions,
+    });
   }
 }

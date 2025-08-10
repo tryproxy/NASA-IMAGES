@@ -1,6 +1,6 @@
 export const LOCAL_STORAGE_KEY = '___search_history_43242';
 
-export const INITIAL_QUERY = 'saturn rings';
+export const INITIAL_QUERY = 'Saturn';
 
 export const searchTips = [
   'e.g. nebula, jupiter, apollo 11, mars rover...',

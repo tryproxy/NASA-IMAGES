@@ -1,6 +1,6 @@
-import { Card } from './Card';
-import { searchTips } from '../constants';
-import type { NasaItem } from '../shared/api/nasa/types';
+import { PinnableCard } from '@/features/pinned';
+import type { NasaItem } from '@/shared/api/nasa/types';
+import { searchTips } from '../model/constants';
 
 export function SearchResults({
   searchResults,
@@ -8,14 +8,19 @@ export function SearchResults({
 }: {
   searchResults: NasaItem[];
   isSuccessful?: boolean;
+  isFetching?: boolean;
+  isRefetching?: boolean;
+  isPending?: boolean;
 }) {
+  // TODO redo PinnableCard/crossimport
+
   return (
-    <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)] p-2">
+    <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)]">
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
         {searchResults.length > 0 &&
           searchResults.map((item) => (
             <div key={item.nasa_id} className="w-full text-[var(--color-fg)]">
-              {item.thumbnailUrl && <Card item={item} />}
+              {item.thumbnailUrl && <PinnableCard item={item} />}
             </div>
           ))}
       </div>

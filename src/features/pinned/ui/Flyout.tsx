@@ -1,13 +1,17 @@
 import { useRef } from 'react';
-import { generateCsvString } from '../shared/api/nasa/lib/generateCsvString';
-import { usePinnedItemsStore } from '../shared/model/usePinnedItemsStore';
-import { Button } from './Button';
+import { generateCsvString } from '../lib/generateCsvString';
+import { pinnedItemsStore } from '../model/pinnedItemsStore';
+import { Button } from '@/shared/ui-kit/Button';
 
 export function Flyout() {
   const ref = useRef<HTMLAnchorElement>(null);
-  const items = usePinnedItemsStore((state) => state.saved);
-  const clear = usePinnedItemsStore((state) => state.clear);
+  const items = pinnedItemsStore((state) => state.saved);
+  const clear = pinnedItemsStore((state) => state.clear);
   const count = Object.keys(items).length;
+
+  const pinsCount = Object.keys(items).length;
+
+  if (pinsCount === 0) return null;
 
   const handleDownload = () => {
     const csv = generateCsvString(items);

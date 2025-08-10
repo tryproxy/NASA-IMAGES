@@ -1,7 +1,7 @@
-import { describe, beforeEach, it, expect } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
-import { useSearchHistory } from '../hooks/useSearchHistory';
-import { LOCAL_STORAGE_KEY } from '../constants';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { useSearchHistory } from '../features/search/hooks/useSearchHistory';
+import { LOCAL_STORAGE_KEY } from '@/features/search/model/constants';
 
 describe('useSearchHistory', () => {
   beforeEach(() => localStorage.clear());

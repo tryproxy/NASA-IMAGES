@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { nasaClient } from '../shared/api/nasa';
-// import { nasaClient } from '../api/nasaClient';
 
 describe('nasaClient.search', () => {
   beforeEach(() => vi.resetAllMocks());
@@ -15,7 +14,7 @@ describe('nasaClient.search', () => {
 
     await nasaClient.search({
       query: 'mars rover',
-      options: { page: 2 },
+      params: { page: 2 },
     });
 
     expect(fetch).toHaveBeenCalledWith(

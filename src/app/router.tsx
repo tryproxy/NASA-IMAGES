@@ -3,9 +3,9 @@ import HomePage from '../pages/HomePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { AboutPage } from '../pages/AboutPage';
 import { AppLayout } from './layout/AppLayout';
-import { DetailsPanel } from '../components/DetailsPanel';
 import { ROUTES } from '../shared/model/routes';
 import { Providers } from './providers';
+import { DetailsPanel } from '@/features/details';
 
 export const router = createBrowserRouter(
   [

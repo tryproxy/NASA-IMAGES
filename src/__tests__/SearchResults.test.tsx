@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import dummyThumbnail from '../assets/nasa_fallback.jpg';
-import { SearchResults } from '../components/SearchResults';
 import { MemoryRouter } from 'react-router-dom';
+import { SearchResults } from '../features/search/ui/SearchResults';
 
 const getDummyItem = (id: string, thumbnail: string | undefined) => ({
   nasa_id: id,

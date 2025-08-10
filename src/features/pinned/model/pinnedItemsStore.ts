@@ -1,5 +1,5 @@
+import type { NasaItem } from '@/shared/api/nasa/types';
 import { create } from 'zustand';
-import type { NasaItem } from '../api/nasa/types';
 
 interface PinnedItemsStore {
   saved: Record<string, NasaItem>;
@@ -11,7 +11,7 @@ interface PinnedItemsStore {
 
 const initialState: Record<string, NasaItem> = {};
 
-export const usePinnedItemsStore = create<PinnedItemsStore>((set, get) => ({
+export const pinnedItemsStore = create<PinnedItemsStore>((set, get) => ({
   saved: initialState,
   has: (id) => id in get().saved,
 

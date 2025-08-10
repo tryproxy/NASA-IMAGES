@@ -1,4 +1,4 @@
-import type { NasaItem } from '../types';
+import type { NasaItem } from '@/shared/api/nasa/types';
 
 export const generateCsvString = (items: Record<string, NasaItem>) => {
   const header = ['NASA_ID', 'Media_Type', 'Title', 'Description'];
