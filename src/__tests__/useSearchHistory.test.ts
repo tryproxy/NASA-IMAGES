@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { LOCAL_STORAGE_KEY } from '../constants';
 import { useSearchHistory } from '../features/search/hooks/useSearchHistory';
+import { LOCAL_STORAGE_KEY } from '@/features/search/model/constants';
 
 describe('useSearchHistory', () => {
   beforeEach(() => localStorage.clear());
