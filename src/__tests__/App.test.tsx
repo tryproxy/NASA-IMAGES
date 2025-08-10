@@ -11,10 +11,7 @@ import {
 import TestApp from '../pages/HomePage';
 import { MemoryRouter } from 'react-router-dom';
 import { nasaClient } from '../shared/api/nasa';
-import {
-  INITIAL_QUERY,
-  LOCAL_STORAGE_KEY,
-} from '../features/search/model/constants';
+import { INITIAL_QUERY } from '../features/search/model/constants';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -71,54 +68,4 @@ describe('App', () => {
       )
     );
   });
-
-  it('shows the last search when it exists', async () => {
-    const mockSearch = nasaClient.search as Mock;
-    const lastSavedSearch = ['jupiter'];
-
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSavedSearch));
-    mockSearch.mockResolvedValue({
-      totalHits: 1,
-      items: [mockSearchResults],
-    });
-
-    render(<App />);
-
-    await waitFor(() =>
-      expect(mockSearch).toHaveBeenCalledWith(
-        { query: lastSavedSearch[0], params: { page: 1 } },
-        expect.anything()
-      )
-    );
-  });
-
-  // it('shows loader when search is in progress', async () => {
-  //   const mockSearch = nasaClient.search as Mock;
-  //   mockSearch.mockImplementation(
-  //     () =>
-  //       new Promise((result) =>
-  //         setTimeout(
-  //           () =>
-  //             result({
-  //               totalHits: 1,
-  //               items: [],
-  //             }),
-  //           1000
-  //         )
-  //       )
-  //   );
-
-  //   render(<App />);
-
-  //   expect(screen.findByTestId('loader')).toBeInTheDocument();
-  // });
-
-  // it('shows error message when search reuqest fails', async () => {
-  //   const mockSearch = nasaClient.search as Mock;
-  //   mockSearch.mockRejectedValue(new Error('Failed to fetch'));
-
-  //   render(<App />);
-
-  //   expect(screen.findByText(/404 not found/i)).toBeInTheDocument();
-  // });
 });

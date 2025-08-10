@@ -7,7 +7,7 @@ export function DetailsPanel() {
   const { page = 1, detailsId } = useParams();
   if (!detailsId) return null;
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div data-testid="modal-asset" className="flex flex-col gap-4 p-4">
       <ModalAsset
         mode={'panel'}
         assetId={detailsId || ''}

@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { AppLayout } from '../app/layout/AppLayout';
 import { Providers } from '../app/providers';
@@ -13,6 +13,8 @@ describe('AppLayout', () => {
         </MemoryRouter>
       </Providers>
     );
+    const burgerBtn = screen.getByTestId('burger');
+    fireEvent.click(burgerBtn);
     expect(screen.getByText(/home/i)).toBeInTheDocument();
     expect(screen.getByText(/about/i)).toBeInTheDocument();
   });

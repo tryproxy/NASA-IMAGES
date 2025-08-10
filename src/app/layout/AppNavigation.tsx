@@ -8,6 +8,7 @@ export function AppNavigation() {
   return (
     <div className="flex gap-4">
       <button
+        data-testid="burger"
         className="cursor-pointer"
         onClick={() => setIsOpen((prev) => !prev)}
       >
