@@ -3,13 +3,15 @@ import { cn } from '@/shared/lib/cn';
 export const Button = ({
   content,
   className = '',
-  onClick,
   isDisabled = false,
+  children,
+  onClick,
 }: {
-  content: string;
+  content?: string;
   className?: string;
   isDisabled?: boolean;
-  onClick: () => void;
+  children?: React.ReactNode;
+  onClick?: () => void;
 }) => {
   return (
     <button
@@ -21,6 +23,7 @@ export const Button = ({
       onClick={onClick}
     >
       {content}
+      {children}
     </button>
   );
 };

@@ -1,15 +1,21 @@
-import { Outlet } from 'react-router-dom';
-import { AppHeader } from '../../components/AppHeader';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Outlet } from 'react-router-dom';
+import { AppHeader } from './AppHeader';
+import { ThemeToggler } from '@/shared/ui-kit/ThemeToggler';
+import { useThemeContext } from '@/shared/model/context/useThemeContext';
 
 export function AppLayout() {
+  const { theme, toggleTheme } = useThemeContext();
+
   return (
     <>
       <div className="flex h-screen w-full flex-col">
-        <AppHeader />
-        <div className="flex-1">
+        <AppHeader>
+          <ThemeToggler content={theme} onClick={toggleTheme} />
+        </AppHeader>
+        <main className="flex-1">
           <Outlet />
-        </div>
+        </main>
       </div>
       <ReactQueryDevtools initialIsOpen={true} />
     </>
