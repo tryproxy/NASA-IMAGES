@@ -3,7 +3,6 @@ import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useParams } from 'react-router-dom';
 import fallbackImage from '../assets/nasa_fallback.jpg';
 import { PinChip } from './PinChip';
-// import { Loader } from '@/shared/ui/kit/Loader';
 
 export function Card({
   item,
@@ -31,8 +30,6 @@ export function Card({
           e.currentTarget.src = fallbackImage;
         }}
       />
-
-      {/*<Loader className="absolute inset-0 flex items-center justify-center" />*/}
 
       <PinChip
         isSelected={isSelected}

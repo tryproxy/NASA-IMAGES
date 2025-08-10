@@ -22,9 +22,9 @@ export function ThemeToggler({
         onClick={onClick}
       >
         {content === 'light' ? (
-          <SunIcon className="h-6 w-6 hover:text-[var(-color-fg)]" />
+          <SunIcon className="h-6 w-6" />
         ) : (
-          <SaturnIcon className="h-6 w-6 hover:text-[var(-color-fg)]" />
+          <SaturnIcon className="h-6 w-6" />
         )}
       </Button>
     </div>

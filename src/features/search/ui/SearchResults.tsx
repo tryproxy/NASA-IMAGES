@@ -5,16 +5,12 @@ import { searchTips } from '../model/constants';
 export function SearchResults({
   searchResults,
   isSuccessful,
-  // hasCursor,
-  // cursorRef,
 }: {
   searchResults: NasaItem[];
   isSuccessful?: boolean;
   isFetching?: boolean;
   isRefetching?: boolean;
   isPending?: boolean;
-  // hasCurosor?: boolean;
-  // cursorRef: React.Ref<HTMLDivElement>;
 }) {
   // TODO redo PinnableCard/crossimport
 
