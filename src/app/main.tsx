@@ -1,3 +1,12 @@
+import { scan } from 'react-scan';
+
+scan({
+  enabled: true,
+  trackUnnecessaryRenders: true,
+  log: true,
+  showToolbar: true,
+  dangerouslyForceRunInProduction: true,
+});
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';

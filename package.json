@@ -21,6 +21,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.1",
+    "react-scan": "^0.4.3",
     "tailwind": "^4.0.0",
     "tailwind-merge": "^3.3.1",
     "zustand": "^5.0.7"
@@ -55,5 +56,15 @@
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.46.2",
+    "@rollup/rollup-linux-arm64-gnu": "^4.46.2",
+    "@rollup/rollup-linux-arm64-musl": "^4.46.2",
+    "@rollup/rollup-darwin-x64": "^4.46.2",
+    "@rollup/rollup-darwin-arm64": "^4.46.2",
+    "@rollup/rollup-win32-x64-msvc": "^4.46.2",
+    "@rollup/rollup-win32-arm64-msvc": "^4.46.2",
+    "@rollup/rollup-win32-ia32-msvc": "^4.46.2"
   }
 }
