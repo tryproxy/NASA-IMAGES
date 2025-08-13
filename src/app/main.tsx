@@ -10,7 +10,7 @@ scan({
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { ErrorBoundry } from '../components/ErrorBoundry.tsx';
+import { ErrorBoundry } from '../shared/ui-kit/ErrorBoundry/ErrorBoundry.tsx';
 import './index.css';
 import { router } from './router.tsx';
 

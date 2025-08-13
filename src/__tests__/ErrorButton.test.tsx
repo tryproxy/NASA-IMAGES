@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { ErrorButton } from '../components/ErrorButton';
+import { ErrorButton } from '../shared/ui-kit/ErrorBoundry/ErrorButton';
 
 describe('ErrorButton', () => {
   it('is a Button with a text', () => {

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { Loader } from '../components/Loader';
+import { Loader } from '../shared/ui-kit/LoaderLegacy';
 
 describe('Loader', () => {
   it('renders a Loader indication', () => {
