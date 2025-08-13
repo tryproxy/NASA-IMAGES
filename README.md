@@ -1,69 +1,37 @@
-# React + TypeScript + Vite
+# NASA IMAGES (SPA)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff)](https://vitejs.dev/) [![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000)](https://react.dev/) [![React Router](https://img.shields.io/badge/React%20Router-CA4245?logo=react-router&logoColor=fff)](https://reactrouter.com/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=fff)](https://tailwindcss.com/) [![Zustand](https://img.shields.io/badge/Zustand-FF7E29)](https://zustand-demo.pmnd.rs/) [![TanStack Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=react-query&logoColor=fff)](https://tanstack.com/query) [![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=fff)](https://vitest.dev/) [![FSD](https://img.shields.io/badge/FSD-Feature--Sliced%20Design-8A2BE2)](https://feature-sliced.design/)
 
-Currently, two official plugins are available:
+This app searches and displays images (and videos - TBD) from nasa’s image and video library
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## todo
 
-## Expanding the ESLint configuration
+- [ ] video support
+- [ ] improve search with live results, debounce, and quick suggestions
+- [ ] infinite scroll
+- [ ] modal view for full-size images and with video playback support
+- [ ] user auth and profile page
+- [ ] boards/collections feature for saved assets
+- [ ] masonry grid
+- [ ] responsive design
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**api**
+[NASA image and video library API docs (pdf)](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## instructions
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+1. `git clone <repo>` – clone
+2. `git switch spa-build` – switch
+3. `npm i` – install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## notes
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `package-lock.json` is kept, but if installing or building issues happen, remove `-lock.json` and reinstall
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## scripts
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+- `npm run dev` – start dev server
+- `npm run build` – production build
+- `npm run preview` – preview build
+- `npm run lint` – lint code
+- `npm run test` – run tests
