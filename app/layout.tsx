@@ -1,8 +1,11 @@
-// import './globals.css';
+import './globals.css';
 import { Metadata } from 'next';
+import { AppLayout } from '../widgets/AppLayout/AppLayout';
+import { Providers } from './providers';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
-  title: 'Title',
+  title: 'NASA IMAGES',
   description: 'NASA IMAGES',
 };
 
@@ -14,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div id="root">{children}</div>
+        <Providers>
+          <AppLayout>{children}</AppLayout>
+        </Providers>
       </body>
     </html>
   );
