@@ -17,7 +17,7 @@ export function AppLayout() {
           <Outlet />
         </main>
       </div>
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   );
 }

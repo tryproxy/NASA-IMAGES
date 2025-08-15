@@ -1,7 +1,7 @@
 import { Button } from '@/shared/ui-kit/Button';
 import { cn } from '../lib/cn';
-import SunIcon from '../assets/theme_sun.svg?react';
-import SaturnIcon from '../assets/theme_saturn.svg?react';
+// import SunIcon from '../assets/theme_sun.svg?react';
+// import SaturnIcon from '../assets/theme_saturn.svg?react';
 
 export function ThemeToggler({
   className,
@@ -22,9 +22,11 @@ export function ThemeToggler({
         onClick={onClick}
       >
         {content === 'light' ? (
-          <SunIcon className="h-6 w-6" />
+          // <SunIcon className="h-6 w-6" />
+          <p>SUN</p>
         ) : (
-          <SaturnIcon className="h-6 w-6" />
+          // <SaturnIcon className="h-6 w-6" />
+          <p>SATURN</p>
         )}
       </Button>
     </div>

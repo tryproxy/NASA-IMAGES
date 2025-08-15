@@ -30,3 +30,7 @@ coverage
 
 
 bundle.*
+
+# Nextjs
+.next
+next-env.d.ts
