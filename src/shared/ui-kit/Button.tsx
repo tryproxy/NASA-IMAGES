@@ -1,4 +1,6 @@
-import { cn } from '@/shared/lib/cn';
+'use client';
+
+import { cn } from '../lib/cn';
 
 export const Button = ({
   content,

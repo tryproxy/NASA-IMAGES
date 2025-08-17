@@ -1,10 +1,10 @@
 import fallbackImg from '../assets/nasa_fallback.jpg';
 import { ModalAssetImage } from './ModalAssetImage';
-import { ModalAssetVideo } from './ModalAssetVideo';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERIES } from '../api/queries';
 import { Loader } from '@/shared/ui-kit/Loader';
 import { RefreshButton } from '@/features/search/ui/RefreshButton';
+import { NasaAssetResult } from '@/shared/api/nasa/types';
 
 export function ModalAsset({
   assetId,
@@ -12,6 +12,7 @@ export function ModalAsset({
   assetTitle,
   assetType,
   mode = 'panel',
+  item,
   onClose,
 }: {
   assetId: string;
@@ -20,11 +21,12 @@ export function ModalAsset({
   assetType: 'image' | 'video';
   assetDescription: string;
   mode?: 'modal' | 'panel';
+  item: NasaAssetResult;
   onClose: () => void;
 }) {
   const qc = useQueryClient();
   const { data, isSuccess, isError, isPending, dataUpdatedAt, isRefetching } =
-    useQuery(QUERIES.getAsset.query({ id: assetId }));
+    useQuery({ ...QUERIES.getAsset.query({ id: assetId }), initialData: item });
 
   const { large, medium, small, original } = data ?? {};
   const assetUrl =
@@ -68,7 +70,7 @@ export function ModalAsset({
               {assetType === 'image' ? (
                 <ModalAssetImage imageSrc={assetUrl} imageTitle={assetTitle} />
               ) : (
-                <ModalAssetVideo videoSrc={assetUrl} videoTitle={assetTitle} />
+                <div>VIDEO TBD...</div>
               )}
             </div>
             <div>

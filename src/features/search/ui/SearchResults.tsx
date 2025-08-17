@@ -1,6 +1,7 @@
+'use client';
+
 import { PinnableCard } from '@/features/pinned';
 import type { NasaItem } from '@/shared/api/nasa/types';
-import { searchTips } from '../model/constants';
 
 export function SearchResults({
   searchResults,
@@ -12,8 +13,6 @@ export function SearchResults({
   isRefetching?: boolean;
   isPending?: boolean;
 }) {
-  // TODO redo PinnableCard/crossimport
-
   return (
     <div className="w-full max-w-screen-xl rounded-sm border-[var(--color-border)]">
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-4">
@@ -30,7 +29,7 @@ export function SearchResults({
             No results found
           </p>
           <p className="max-w-full font-bold text-[var(--color-fg)]">
-            {searchTips[1]}
+            {'Search...'}
           </p>
         </div>
       )}

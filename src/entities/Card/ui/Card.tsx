@@ -1,7 +1,9 @@
+'use client';
+
 import type { NasaItem } from '@/shared/api/nasa/types';
 import { useNavigateTo } from '@/shared/hooks/useNavigateTo';
 import { useParams } from 'react-router-dom';
-import fallbackImage from '../assets/nasa_fallback.jpg';
+// import fallbackImage from '../assets/nasa_fallback.jpg';
 import { PinChip } from './PinChip';
 
 export function Card({
@@ -26,9 +28,9 @@ export function Card({
         alt={item.title}
         title={item.description}
         onClick={handleClick}
-        onError={(e) => {
-          e.currentTarget.src = fallbackImage;
-        }}
+        // onError={(e) => {
+        //   e.currentTarget.src = fallbackImage;
+        // }}
       />
 
       <PinChip
