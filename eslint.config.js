@@ -8,7 +8,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage'] },
+  { ignores: ['dist', 'next', '.next', 'legacy_src'] },
   {
     extends: [
       js.configs.recommended,
@@ -27,6 +27,7 @@ export default tseslint.config(
       'react-compiler': reactCompiler,
     },
     rules: {
+      'react-refresh/only-export-components': 'off',
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',

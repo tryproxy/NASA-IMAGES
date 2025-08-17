@@ -1,26 +1,36 @@
+'use client';
+
+import Image, { StaticImageData } from 'next/image';
+
 export function ModalAssetImage({
   imageSrc,
   imageTitle,
 }: {
-  imageSrc: string;
+  imageSrc: string | StaticImageData;
   imageTitle: string;
 }) {
   return (
     <div className="flex max-w-[80vw] cursor-default flex-col items-center justify-center">
       <div className="relative flex max-h-[80vh] max-w-full items-center justify-center rounded-md">
-        <img
-          className="pointer-events-none absolute inset-0 -z-10 scale-110 object-cover opacity-50 blur-3xl"
+        <Image
           src={imageSrc}
           alt=""
+          fill
           aria-hidden
+          priority
+          className="pointer-events-none -z-10 scale-110 object-cover opacity-50 blur-3xl"
         />
-        <img
-          className="z-10 max-h-[80vh] max-w-full object-contain"
+
+        <Image
           src={imageSrc}
           alt={imageTitle}
+          width={1000}
+          height={800}
+          className="z-10 max-h-[80vh] max-w-full object-contain"
           onClick={(e) => e.stopPropagation()}
         />
       </div>
+
       <p
         className="z-10 flex items-center p-4 text-sm text-amber-50"
         onClick={(e) => e.stopPropagation()}

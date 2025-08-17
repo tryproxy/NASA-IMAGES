@@ -1,0 +1,148 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #000;
+  --color-surface: #0a0a0a;
+  --color-fg: #fef3c7;
+  --color-fg-secondary: #e6e6e6;
+  --color-border: #fef3c733;
+  --color-overlay: #ffffff1a;
+  --color-danger: #f87171;
+  --color-danger-soft: #fecaca;
+}
+
+[data-theme='dark'] {
+  --color-bg: #000;
+  --color-surface: #0a0a0a;
+  --color-surface2: #fef3c7;
+  --color-surface3: #1e1e1e;
+  --color-fg: #fef3c7;
+  --color-fg-secondary: #e6e6e6;
+  --color-border: #fef3c733;
+  --color-overlay: #ffffff99;
+  --color-primary: #fff;
+  --color-primary-hover: #f4f4f4;
+  --color-secondary: #e6e6e6;
+  --color-danger: #f87171;
+  --color-danger-soft: #fecaca;
+  --color-skeleton-shimmer: #ffffff14;
+  --color-loader: #0003;
+  --color-loader2: #fff3;
+}
+
+[data-theme='light'] {
+  --color-bg: #fdf6e3;
+  --color-surface: #f4e2c3;
+  --color-surface2: #cba982;
+  --color-surface3: #d6b98d;
+  --color-fg: #3f2f1b;
+  --color-fg-secondary: #7a5e42;
+  --color-border: #cba982;
+  --color-overlay: #ffedc233;
+  --color-primary: #b86b00;
+  --color-primary-hover: #944f00;
+  --color-secondary: #ffb347;
+  --color-danger: #c92400;
+  --color-danger-soft: #fbbbad;
+  --color-skeleton-shimmer: #0000000a;
+  --color-loader: #cba98233;
+  --color-loader2: #f4e2c333;
+}
+
+@layer components {
+  .link {
+    @apply inline-block rounded-sm border border-[var(--color-primary)] px-4 py-2 text-sm;
+  }
+}
+
+@keyframes loader {
+  0% {
+    content: '.';
+  }
+  20% {
+    content: '..';
+  }
+  40% {
+    content: '...';
+  }
+  60% {
+    content: ' ..';
+  }
+  80% {
+    content: '  .';
+  }
+  100% {
+    content: '.';
+  }
+}
+
+.loader::after {
+  content: '';
+  animation: loader 500ms infinite;
+  white-space: pre;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 3000ms ease-out forwards;
+}
+
+@keyframes animate-ease-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-ease-in {
+  animation: animate-ease-in 100ms ease-out forwards;
+}
+
+@keyframes popup-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.popup-fade-in {
+  animation: popup-fade-in 100ms ease-out forwards;
+}
+
+.skeleton {
+  @apply relative overflow-hidden bg-[var(--color-surface3)];
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-skeleton-shimmer),
+    transparent
+  );
+  animation: skeleton-loading 1400ms infinite;
+}
+
+@keyframes skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}

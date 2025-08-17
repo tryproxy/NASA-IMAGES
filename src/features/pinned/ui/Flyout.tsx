@@ -1,10 +1,10 @@
-import { useRef } from 'react';
-import { generateCsvString } from '../lib/generateCsvString';
-import { pinnedItemsStore } from '../model/pinnedItemsStore';
+'use client';
+
 import { Button } from '@/shared/ui-kit/Button';
+import { pinnedItemsStore } from '../model/pinnedItemsStore';
+import { exportCsvAction } from '@/app/actions';
 
 export function Flyout() {
-  const ref = useRef<HTMLAnchorElement>(null);
   const items = pinnedItemsStore((state) => state.saved);
   const clear = pinnedItemsStore((state) => state.clear);
   const count = Object.keys(items).length;
@@ -13,20 +13,20 @@ export function Flyout() {
 
   if (pinsCount === 0) return null;
 
-  const handleDownload = () => {
-    const csv = generateCsvString(items);
-    const url = URL.createObjectURL(
-      new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    );
+  const handleDownload = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const csv = await exportCsvAction(items);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${count}_items.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    clear();
 
-    if (ref.current) {
-      ref.current.href = url;
-      ref.current.download = `${count}_items.csv`;
-
-      setTimeout(() => {
-        URL.revokeObjectURL(url);
-      }, 1000);
-    }
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   return (
@@ -39,7 +39,6 @@ export function Flyout() {
         />
 
         <a
-          ref={ref}
           className="inline-block rounded-sm border px-4 py-2 text-sm transition-colors hover:cursor-pointer hover:bg-[var(--color-fg)] hover:text-[var(--color-surface)]"
           onClick={handleDownload}
         >

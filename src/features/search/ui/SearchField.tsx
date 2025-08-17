@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { getSearchTip } from '../lib/getSearchTip';
+'use client';
 
-const searchPlaceholder = getSearchTip();
+import { useEffect, useRef, useState } from 'react';
+const searchPlaceholder = 'Search...';
 
 export function SearchField({
   searchQueries,

@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/shared/ui-kit/Button';
 import { useEffect, useState } from 'react';
 

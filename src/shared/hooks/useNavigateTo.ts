@@ -1,13 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../model/routes';
+'use client';
+import { useRouter } from 'next/navigation';
 
 export const useNavigateTo = () => {
-  const navigate = useNavigate();
-  const goToPage = (page: number | string, detailsId?: string) =>
-    navigate(
-      detailsId
-        ? ROUTES.DETAILS.href({ page, detailsId })
-        : ROUTES.PAGE.href({ page })
-    );
-  return { goToPage, navigate };
+  const router = useRouter();
+  const goToPage = (
+    page: number | string,
+    detailsId?: string,
+    query?: string
+  ) => {
+    const q = query ? `?query=${encodeURIComponent(query)}` : '';
+    if (detailsId) {
+      router.push(`/${page}/${detailsId}/${q}`);
+    } else {
+      router.push(`/${page}${q}`);
+    }
+  };
+
+  return { goToPage, router };
 };

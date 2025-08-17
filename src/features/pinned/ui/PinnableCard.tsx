@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from '@/entities/Card/ui/Card';
 import type { NasaItem } from '@/shared/api/nasa/types';
 import { pinnedItemsStore } from '../model/pinnedItemsStore';
@@ -8,6 +10,7 @@ export function PinnableCard({ item }: { item: NasaItem }) {
   const remove = pinnedItemsStore((state) => state.remove);
 
   const handlePin = () => {
+    console.log('handlePin', item);
     if (isItemStored) remove(item.nasa_id);
     else add(item);
   };

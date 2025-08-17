@@ -1,17 +1,19 @@
-import { Button } from '@/shared/ui-kit/Button';
+'use client';
+
+import Image from 'next/image';
 import { cn } from '../lib/cn';
-import SunIcon from '../assets/theme_sun.svg?react';
-import SaturnIcon from '../assets/theme_saturn.svg?react';
+import { Button } from './Button';
+
+import { useThemeContext } from '../model/context/useThemeContext';
 
 export function ThemeToggler({
   className,
-  content,
-  onClick,
 }: {
   className?: string;
   content?: 'light' | 'dark';
-  onClick?: () => void;
 }) {
+  const { theme, toggleTheme } = useThemeContext();
+
   return (
     <div className="">
       <Button
@@ -19,12 +21,24 @@ export function ThemeToggler({
           'link rounded border-transparent bg-[var(--color-bg)] p-2 px-3 py-1 text-[var(--color-fg)] hover:bg-transparent hover:text-[var(--color-primary)]',
           className
         )}
-        onClick={onClick}
+        onClick={toggleTheme}
       >
-        {content === 'light' ? (
-          <SunIcon className="h-6 w-6" />
+        {theme === 'light' ? (
+          <Image
+            src="/icons/theme_sun.svg"
+            alt="Ligth theme"
+            className="h-6 w-6"
+            width={24}
+            height={24}
+          />
         ) : (
-          <SaturnIcon className="h-6 w-6" />
+          <Image
+            src="/icons/theme_saturn.svg"
+            alt="Dark theme"
+            className="h-6 w-6"
+            width={24}
+            height={24}
+          />
         )}
       </Button>
     </div>
