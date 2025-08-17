@@ -2,6 +2,7 @@
 
 import { Button } from '@/shared/ui-kit/Button';
 import { pinnedItemsStore } from '../model/pinnedItemsStore';
+import { exportCsvAction } from '@/app/actions';
 
 export function Flyout() {
   const items = pinnedItemsStore((state) => state.saved);
@@ -14,25 +15,9 @@ export function Flyout() {
 
   const handleDownload = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const payload = {
-      count,
-      items,
-    };
-
-    const response = await fetch('/api/csv', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      alert('CSV generation failed');
-      return;
-    }
-
-    const blob = await response.blob();
+    const csv = await exportCsvAction(items);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement('a');
     link.href = url;
     link.download = `${count}_items.csv`;
